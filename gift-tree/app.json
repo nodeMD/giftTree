@@ -27,6 +27,7 @@
       "favicon": "./assets/images/favicon.png"
     },
     "plugins": [
+      "@notifee/react-native",
       "expo-router",
       [
         "expo-splash-screen",
