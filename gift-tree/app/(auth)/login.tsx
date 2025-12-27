@@ -1,6 +1,7 @@
-import { useAuth } from '@/contexts/AuthContext';
-import { Link, router } from 'expo-router';
-import { useState } from 'react';
+import Logo from "@/components/Logo";
+import { useAuth } from "@/contexts/AuthContext";
+import { Link, router } from "expo-router";
+import { useState } from "react";
 import {
   ActivityIndicator,
   ScrollView,
@@ -8,35 +9,35 @@ import {
   TextInput,
   TouchableOpacity,
   View,
-} from 'react-native';
+} from "react-native";
 
 export default function LoginScreen() {
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
-  const [error, setError] = useState('');
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [error, setError] = useState("");
   const [isLoading, setIsLoading] = useState(false);
   const { signIn } = useAuth();
 
   const handleLogin = async () => {
     if (!email || !password) {
-      setError('Please fill in all fields');
+      setError("Please fill in all fields");
       return;
     }
 
     setIsLoading(true);
-    setError('');
+    setError("");
 
     try {
       await signIn(email, password);
-      router.replace('/(tabs)');
+      router.replace("/(tabs)");
     } catch (err: any) {
-      console.error('Login error:', err);
-      if (err?.message?.includes('Invalid credentials')) {
-        setError('Invalid email or password');
-      } else if (err?.message?.includes('Invalid email')) {
-        setError('Please enter a valid email address');
+      console.error("Login error:", err);
+      if (err?.message?.includes("Invalid credentials")) {
+        setError("Invalid email or password");
+      } else if (err?.message?.includes("Invalid email")) {
+        setError("Please enter a valid email address");
       } else {
-        setError('Something went wrong. Please try again.');
+        setError("Something went wrong. Please try again.");
       }
     } finally {
       setIsLoading(false);
@@ -48,17 +49,16 @@ export default function LoginScreen() {
       <View className="flex-1 items-center justify-center p-6 min-h-screen">
         <View className="w-full max-w-sm">
           {/* Logo */}
-          <View className="items-center mb-8">
-            <View className="w-16 h-16 bg-green-600 rounded-full items-center justify-center mb-2">
-              <Text className="text-white text-2xl">🌲</Text>
-            </View>
-            <Text className="text-green-600 font-bold text-lg">GIFTREE</Text>
-          </View>
+          <Logo />
 
           {/* Header */}
           <View className="items-center mb-8">
-            <Text className="text-2xl font-semibold text-gray-900 mb-1">Welcome Back</Text>
-            <Text className="text-gray-500 text-sm">Log in to continue planting trees</Text>
+            <Text className="text-2xl font-semibold text-gray-900 mb-1">
+              Welcome Back
+            </Text>
+            <Text className="text-gray-500 text-sm">
+              Log in to continue planting trees
+            </Text>
           </View>
 
           {/* Form */}
@@ -70,7 +70,9 @@ export default function LoginScreen() {
             ) : null}
 
             <View className="mb-4">
-              <Text className="text-sm text-gray-700 font-medium mb-2">Email</Text>
+              <Text className="text-sm text-gray-700 font-medium mb-2">
+                Email
+              </Text>
               <TextInput
                 value={email}
                 onChangeText={setEmail}
@@ -84,7 +86,9 @@ export default function LoginScreen() {
             </View>
 
             <View className="mb-2">
-              <Text className="text-sm text-gray-700 font-medium mb-2">Password</Text>
+              <Text className="text-sm text-gray-700 font-medium mb-2">
+                Password
+              </Text>
               <TextInput
                 value={password}
                 onChangeText={setPassword}
@@ -106,12 +110,14 @@ export default function LoginScreen() {
             <TouchableOpacity
               onPress={handleLogin}
               disabled={isLoading}
-              className={`w-full py-3.5 rounded-lg ${isLoading ? 'bg-green-400' : 'bg-green-600 active:bg-green-700'}`}
+              className={`w-full py-3.5 rounded-lg ${isLoading ? "bg-green-400" : "bg-green-600 active:bg-green-700"}`}
             >
               {isLoading ? (
                 <ActivityIndicator color="white" />
               ) : (
-                <Text className="text-white text-center font-semibold text-base">Log In</Text>
+                <Text className="text-white text-center font-semibold text-base">
+                  Log In
+                </Text>
               )}
             </TouchableOpacity>
           </View>
@@ -119,7 +125,7 @@ export default function LoginScreen() {
           {/* Footer */}
           <View className="mt-8 items-center">
             <Text className="text-gray-500 text-sm">
-              Don't have an account?{' '}
+              Don't have an account?{" "}
               <Link href="/(auth)/register" asChild>
                 <Text className="text-green-600 font-medium">Sign up</Text>
               </Link>
