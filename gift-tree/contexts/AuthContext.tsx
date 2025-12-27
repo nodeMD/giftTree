@@ -45,7 +45,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
         setUser({
           id: currentUser.$id,
           email: currentUser.email,
-          nickname: profile?.nickname || currentUser.name || "User",
+          nickname: profile?.nickName || currentUser.name || "User",
         });
       } else {
         setUser(null);
@@ -65,7 +65,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       setUser({
         id: authUser.$id,
         email: authUser.email,
-        nickname: profile?.nickname || authUser.name || "User",
+        nickname: profile?.nickName || authUser.name || "User",
       });
     } catch (error) {
       console.error("Error signing in:", error);
@@ -79,7 +79,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       setUser({
         id: profile.$id,
         email: profile.email,
-        nickname: profile.nickname,
+        nickname: profile.nickName,
       });
     } catch (error) {
       console.error("Error signing up:", error);

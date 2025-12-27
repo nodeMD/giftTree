@@ -29,7 +29,7 @@ export const databases = new Databases(client);
 
 // Types
 export interface UserProfile extends Models.Row {
-  nickname: string;
+  nickName: string;
   email: string;
 }
 
@@ -67,7 +67,7 @@ export async function createUser(
       tableId: appwriteConfig.usersCollectionId,
       rowId: newAccount.$id,
       data: {
-        nickname,
+        nickName: nickname,
         email,
       },
       permissions: [
