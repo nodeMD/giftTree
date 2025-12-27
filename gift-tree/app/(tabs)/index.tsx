@@ -2,10 +2,8 @@ import { fetchCatGif } from "@/services/api";
 import useFetch from "@/services/useFetch";
 import { ActivityIndicator, Image, Text, TouchableOpacity, View } from "react-native";
 
-export default async function HomeScreen() {
-
-
-  const { data, loading, error, refetch } = useFetch<{ url: string }>(await fetchCatGif());
+export default function HomeScreen() {
+  const { data, loading, error, refetch } = useFetch<{ url: string }>(fetchCatGif);
   return (
     <View className="flex-1 bg-white">
       {/* Header */}
@@ -35,7 +33,7 @@ export default async function HomeScreen() {
                 Error: {error.message}
               </Text> 
             )}
-            {data && data.url && (
+            {data && (
               <Image source={{ uri: data.url }} className="w-full h-full" />
             )}
         </View>
