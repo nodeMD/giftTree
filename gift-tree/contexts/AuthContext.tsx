@@ -4,7 +4,7 @@ import {
   createUser,
   getCurrentUser,
   getUserProfile,
-} from "@/lib/appwrite";
+} from "@/services/appwrite";
 import {
   createContext,
   ReactNode,

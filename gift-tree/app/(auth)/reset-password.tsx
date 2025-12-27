@@ -1,5 +1,5 @@
 import Logo from "@/components/Logo";
-import { completePasswordReset, sendPasswordReset } from "@/lib/appwrite";
+import { completePasswordReset, sendPasswordReset } from "@/services/appwrite";
 import { Link, router, useLocalSearchParams } from "expo-router";
 import { useState } from "react";
 import {
