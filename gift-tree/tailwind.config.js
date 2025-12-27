@@ -13,9 +13,9 @@ module.exports = {
         },
         light: {
           100: "#FFFFFF",
-        }
+        },
       },
     },
   },
   plugins: [],
-}
+};

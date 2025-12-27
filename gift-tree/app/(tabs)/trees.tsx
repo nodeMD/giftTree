@@ -1,5 +1,5 @@
-import { useAuth } from '@/contexts/AuthContext';
-import { ScrollView, Text, View } from 'react-native';
+import { useAuth } from "@/contexts/AuthContext";
+import { ScrollView, Text, View } from "react-native";
 
 // Placeholder data - will be replaced with actual data from backend
 const trees: { id: string; name: string; location: string }[] = [];
@@ -58,4 +58,3 @@ export default function TreesScreen() {
     </View>
   );
 }
-

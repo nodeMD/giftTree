@@ -1,5 +1,5 @@
-import { useAuth } from '@/contexts/AuthContext';
-import { Text, TouchableOpacity, View } from 'react-native';
+import { useAuth } from "@/contexts/AuthContext";
+import { Text, TouchableOpacity, View } from "react-native";
 
 export default function HomeScreen() {
   const { user } = useAuth();
@@ -26,7 +26,9 @@ export default function HomeScreen() {
 
         {/* Action Button */}
         <TouchableOpacity className="w-full max-w-xs py-4 bg-green-600 rounded-xl active:bg-green-700">
-          <Text className="text-white text-center font-semibold text-base">Another one!</Text>
+          <Text className="text-white text-center font-semibold text-base">
+            Another one!
+          </Text>
         </TouchableOpacity>
       </View>
 
@@ -37,4 +39,3 @@ export default function HomeScreen() {
     </View>
   );
 }
-

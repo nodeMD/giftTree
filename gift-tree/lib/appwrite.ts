@@ -1,4 +1,13 @@
-import { Account, Client, Databases, ID, Models, Permission, Role, TablesDB } from 'react-native-appwrite';
+import {
+  Account,
+  Client,
+  Databases,
+  ID,
+  Models,
+  Permission,
+  Role,
+  TablesDB,
+} from "react-native-appwrite";
 
 // Appwrite configuration
 export const appwriteConfig = {
@@ -31,13 +40,22 @@ export interface AuthUser {
 }
 
 // Auth functions
-export async function createUser(email: string, password: string, nickname: string): Promise<UserProfile> {
+export async function createUser(
+  email: string,
+  password: string,
+  nickname: string,
+): Promise<UserProfile> {
   try {
     // Create auth account
-    const newAccount = await account.create({userId: ID.unique(), email, password, name: nickname});
+    const newAccount = await account.create({
+      userId: ID.unique(),
+      email,
+      password,
+      name: nickname,
+    });
 
     if (!newAccount) {
-      throw new Error('Failed to create account');
+      throw new Error("Failed to create account");
     }
 
     // Sign in to create session
@@ -55,39 +73,42 @@ export async function createUser(email: string, password: string, nickname: stri
       permissions: [
         Permission.read(Role.user(newAccount.$id)),
         Permission.write(Role.user(newAccount.$id)),
-      ]
+      ],
     });
 
     return newUser;
   } catch (error: any) {
-    console.error('Error creating user:', error);
+    console.error("Error creating user:", error);
     throw error;
   }
 }
 
-export async function signIn(email: string, password: string): Promise<AuthUser> {
+export async function signIn(
+  email: string,
+  password: string,
+): Promise<AuthUser> {
   try {
     // Create email session
-    await account.createEmailPasswordSession({email, password});
+    await account.createEmailPasswordSession({ email, password });
 
     // Get current user
     const currentUser = await getCurrentUser();
     if (!currentUser) {
-      throw new Error('Failed to get current user after sign in');
+      throw new Error("Failed to get current user after sign in");
     }
 
     return currentUser;
   } catch (error: any) {
-    console.error('Error signing in:', error);
+    console.error("Error signing in:", error);
     throw error;
   }
 }
 
 export async function signOut(): Promise<void> {
   try {
-    await account.deleteSession({sessionId: 'current'});
+    await account.deleteSession({ sessionId: "current" });
   } catch (error: any) {
-    console.error('Error signing out:', error);
+    console.error("Error signing out:", error);
     throw error;
   }
 }
@@ -106,16 +127,18 @@ export async function getCurrentUser(): Promise<AuthUser | null> {
   }
 }
 
-export async function getUserProfile(userId: string): Promise<UserProfile | null> {
+export async function getUserProfile(
+  userId: string,
+): Promise<UserProfile | null> {
   try {
     const userProfile = await tablesDB.getRow<UserProfile>({
       databaseId: appwriteConfig.databaseId,
       tableId: appwriteConfig.usersCollectionId,
-      rowId: userId
+      rowId: userId,
     });
     return userProfile;
   } catch (error: any) {
-    console.error('Error getting user profile:', error);
+    console.error("Error getting user profile:", error);
     return null;
   }
 }
@@ -123,9 +146,9 @@ export async function getUserProfile(userId: string): Promise<UserProfile | null
 export async function sendPasswordReset(email: string): Promise<void> {
   try {
     // Deep link URL - Appwrite will append ?userId=xxx&secret=yyy
-    await account.createRecovery({ email, url: 'gifttree://reset-password' });
+    await account.createRecovery({ email, url: "gifttree://reset-password" });
   } catch (error: any) {
-    console.error('Error sending password reset:', error);
+    console.error("Error sending password reset:", error);
     throw error;
   }
 }
@@ -133,15 +156,14 @@ export async function sendPasswordReset(email: string): Promise<void> {
 export async function completePasswordReset(
   userId: string,
   secret: string,
-  newPassword: string
+  newPassword: string,
 ): Promise<void> {
   try {
     await account.updateRecovery({ userId, secret, password: newPassword });
   } catch (error: any) {
-    console.error('Error completing password reset:', error);
+    console.error("Error completing password reset:", error);
     throw error;
   }
 }
 
 export { ID };
-

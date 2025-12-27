@@ -3,9 +3,15 @@ import {
   signOut as appwriteSignOut,
   createUser,
   getCurrentUser,
-  getUserProfile
-} from '@/lib/appwrite';
-import { createContext, ReactNode, useContext, useEffect, useState } from 'react';
+  getUserProfile,
+} from "@/lib/appwrite";
+import {
+  createContext,
+  ReactNode,
+  useContext,
+  useEffect,
+  useState,
+} from "react";
 
 interface User {
   id: string;
@@ -39,13 +45,13 @@ export function AuthProvider({ children }: { children: ReactNode }) {
         setUser({
           id: currentUser.$id,
           email: currentUser.email,
-          nickname: profile?.nickname || currentUser.name || 'User',
+          nickname: profile?.nickname || currentUser.name || "User",
         });
       } else {
         setUser(null);
       }
     } catch (error) {
-      console.error('Error loading user:', error);
+      console.error("Error loading user:", error);
       setUser(null);
     } finally {
       setIsLoading(false);
@@ -59,10 +65,10 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       setUser({
         id: authUser.$id,
         email: authUser.email,
-        nickname: profile?.nickname || authUser.name || 'User',
+        nickname: profile?.nickname || authUser.name || "User",
       });
     } catch (error) {
-      console.error('Error signing in:', error);
+      console.error("Error signing in:", error);
       throw error;
     }
   };
@@ -76,7 +82,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
         nickname: profile.nickname,
       });
     } catch (error) {
-      console.error('Error signing up:', error);
+      console.error("Error signing up:", error);
       throw error;
     }
   };
@@ -86,7 +92,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       await appwriteSignOut();
       setUser(null);
     } catch (error) {
-      console.error('Error signing out:', error);
+      console.error("Error signing out:", error);
       throw error;
     }
   };
@@ -101,7 +107,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
 export function useAuth() {
   const context = useContext(AuthContext);
   if (context === undefined) {
-    throw new Error('useAuth must be used within an AuthProvider');
+    throw new Error("useAuth must be used within an AuthProvider");
   }
   return context;
 }

@@ -1,8 +1,8 @@
-import { AuthProvider, useAuth } from '@/contexts/AuthContext';
-import { Slot, useRouter, useSegments } from 'expo-router';
-import { useEffect } from 'react';
-import { ActivityIndicator, View } from 'react-native';
-import './global.css';
+import { AuthProvider, useAuth } from "@/contexts/AuthContext";
+import { Slot, useRouter, useSegments } from "expo-router";
+import { useEffect } from "react";
+import { ActivityIndicator, View } from "react-native";
+import "./global.css";
 
 function RootLayoutNav() {
   const { user, isLoading } = useAuth();
@@ -12,14 +12,14 @@ function RootLayoutNav() {
   useEffect(() => {
     if (isLoading) return;
 
-    const inAuthGroup = segments[0] === '(auth)';
+    const inAuthGroup = segments[0] === "(auth)";
 
     if (!user && !inAuthGroup) {
       // User is not signed in and trying to access protected route
-      router.replace('/(auth)/login');
+      router.replace("/(auth)/login");
     } else if (user && inAuthGroup) {
       // User is signed in but still on auth screens
-      router.replace('/(tabs)');
+      router.replace("/(tabs)");
     }
   }, [user, segments, isLoading]);
 
