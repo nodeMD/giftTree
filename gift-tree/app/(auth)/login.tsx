@@ -18,9 +18,19 @@ export default function LoginScreen() {
   const [isLoading, setIsLoading] = useState(false);
   const { signIn } = useAuth();
 
+  const validateEmail = (email: string) => {
+    return /\S+@\S+\.\S+/.test(email);
+  };
+
   const handleLogin = async () => {
+    // Client-side validation
     if (!email || !password) {
       setError("Please fill in all fields");
+      return;
+    }
+
+    if (!validateEmail(email)) {
+      setError("Please enter a valid email address");
       return;
     }
 
@@ -32,10 +42,16 @@ export default function LoginScreen() {
       router.replace("/(tabs)");
     } catch (err: any) {
       console.error("Login error:", err);
-      if (err?.message?.includes("Invalid credentials")) {
+      const message = err?.message || "";
+
+      if (message.includes("Invalid credentials") || message.includes("Invalid password")) {
         setError("Invalid email or password");
-      } else if (err?.message?.includes("Invalid email")) {
+      } else if (message.includes("email") && message.includes("Invalid")) {
         setError("Please enter a valid email address");
+      } else if (message.includes("not found") || message.includes("does not exist")) {
+        setError("No account found with this email");
+      } else if (message.includes("blocked") || message.includes("disabled")) {
+        setError("This account has been disabled");
       } else {
         setError("Something went wrong. Please try again.");
       }
