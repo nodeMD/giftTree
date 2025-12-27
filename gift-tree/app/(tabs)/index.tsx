@@ -1,9 +1,17 @@
 import { fetchCatGif } from "@/services/api";
 import useFetch from "@/services/useFetch";
-import { ActivityIndicator, Image, Text, TouchableOpacity, View } from "react-native";
+import {
+  ActivityIndicator,
+  Image,
+  Text,
+  TouchableOpacity,
+  View,
+} from "react-native";
 
 export default function HomeScreen() {
-  const { data, loading, error, refetch } = useFetch<{ url: string }>(fetchCatGif);
+  const { data, loading, error, refetch } = useFetch<{ url: string }>(
+    fetchCatGif,
+  );
   return (
     <View className="flex-1 bg-white">
       {/* Header */}
@@ -21,26 +29,23 @@ export default function HomeScreen() {
       <View className="flex-1 items-center justify-center p-4">
         {/* GIF */}
         <View className="w-full aspect-square max-w-xs bg-gray-100 rounded-2xl items-center justify-center mb-8">
-        {loading && (
-              <ActivityIndicator
-                size="large"
-                color="#00ff00"
-                className="top-4"
-              />
-            )}
-            {error && (
-              <Text className="text-red-500 top-4">
-                Error: {error.message}
-              </Text> 
-            )}
-            {data && (
-              <Image source={{ uri: data.url }} className="w-full h-full" />
-            )}
+          {loading && (
+            <ActivityIndicator size="large" color="#00ff00" className="top-4" />
+          )}
+          {error && (
+            <Text className="text-red-500 top-4">Error: {error.message}</Text>
+          )}
+          {data && (
+            <Image source={{ uri: data.url }} className="w-full h-full" />
+          )}
         </View>
 
         {/* Action Button */}
         <TouchableOpacity className="w-full max-w-xs py-4 bg-green-600 rounded-xl active:bg-green-700">
-          <Text className="text-white text-center font-semibold text-base">
+          <Text
+            className="text-white text-center font-semibold text-base"
+            onPress={refetch}
+          >
             Another one!
           </Text>
         </TouchableOpacity>

@@ -44,11 +44,17 @@ export default function LoginScreen() {
       console.error("Login error:", err);
       const message = err?.message || "";
 
-      if (message.includes("Invalid credentials") || message.includes("Invalid password")) {
+      if (
+        message.includes("Invalid credentials") ||
+        message.includes("Invalid password")
+      ) {
         setError("Invalid email or password");
       } else if (message.includes("email") && message.includes("Invalid")) {
         setError("Please enter a valid email address");
-      } else if (message.includes("not found") || message.includes("does not exist")) {
+      } else if (
+        message.includes("not found") ||
+        message.includes("does not exist")
+      ) {
         setError("No account found with this email");
       } else if (message.includes("blocked") || message.includes("disabled")) {
         setError("This account has been disabled");
