@@ -1,13 +1,13 @@
-import { Image, View } from "react-native";
-import { images } from "@/constants/images";
+import { useAuth } from '@/contexts/AuthContext';
+import { Href, Redirect } from 'expo-router';
 
 export default function Index() {
-  return (
-    <View className="flex-1">
-      <Image
-        className="justify-center object-cover object-center rounded-full h-48 w-48"
-        source={images.icon}
-      />
-    </View>
-  );
+  const { user } = useAuth();
+
+  // Redirect to appropriate route based on auth state
+  if (user) {
+    return <Redirect href={'/(tabs)' as Href} />;
+  }
+
+  return <Redirect href={'/(auth)/login' as Href} />;
 }
