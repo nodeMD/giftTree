@@ -1,6 +1,14 @@
+import { useAuth } from '@/contexts/AuthContext';
 import { Link, router } from 'expo-router';
 import { useState } from 'react';
-import { ScrollView, Text, TextInput, TouchableOpacity, View } from 'react-native';
+import {
+  ActivityIndicator,
+  ScrollView,
+  Text,
+  TextInput,
+  TouchableOpacity,
+  View,
+} from 'react-native';
 
 export default function RegisterScreen() {
   const [email, setEmail] = useState('');
@@ -8,6 +16,8 @@ export default function RegisterScreen() {
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
   const [errors, setErrors] = useState<Record<string, string>>({});
+  const [isLoading, setIsLoading] = useState(false);
+  const { signUp } = useAuth();
 
   const validateForm = () => {
     const newErrors: Record<string, string> = {};
@@ -26,8 +36,8 @@ export default function RegisterScreen() {
 
     if (!password) {
       newErrors.password = 'Password is required';
-    } else if (password.length < 6) {
-      newErrors.password = 'Password must be at least 6 characters';
+    } else if (password.length < 8) {
+      newErrors.password = 'Password must be at least 8 characters';
     }
 
     if (!confirmPassword) {
@@ -41,14 +51,27 @@ export default function RegisterScreen() {
   };
 
   const handleSubmit = async () => {
-    if (validateForm()) {
-      try {
-        // TODO: Create user in backend
-        router.replace('/(auth)/login');
-      } catch (error) {
-        console.error('Error registering:', error);
-        setErrors({ general: 'An error occurred' });
+    if (!validateForm()) return;
+
+    setIsLoading(true);
+    setErrors({});
+
+    try {
+      await signUp(email, password, nickname);
+      router.replace('/(tabs)');
+    } catch (error: any) {
+      console.error('Registration error:', error);
+      if (error?.message?.includes('already exists') || error?.code === 409) {
+        setErrors({ general: 'An account with this email already exists' });
+      } else if (error?.message?.includes('Invalid email')) {
+        setErrors({ email: 'Please enter a valid email address' });
+      } else if (error?.message?.includes('password')) {
+        setErrors({ password: 'Password must be at least 8 characters' });
+      } else {
+        setErrors({ general: 'Something went wrong. Please try again.' });
       }
+    } finally {
+      setIsLoading(false);
     }
   };
 
@@ -88,6 +111,7 @@ export default function RegisterScreen() {
                 placeholderTextColor="#9CA3AF"
                 keyboardType="email-address"
                 autoCapitalize="none"
+                editable={!isLoading}
               />
               {errors.email ? (
                 <Text className="mt-1 text-sm text-red-600">{errors.email}</Text>
@@ -103,6 +127,7 @@ export default function RegisterScreen() {
                 placeholder="Choose a nickname"
                 placeholderTextColor="#9CA3AF"
                 autoCapitalize="none"
+                editable={!isLoading}
               />
               {errors.nickname ? (
                 <Text className="mt-1 text-sm text-red-600">{errors.nickname}</Text>
@@ -119,6 +144,7 @@ export default function RegisterScreen() {
                 placeholderTextColor="#9CA3AF"
                 secureTextEntry
                 autoCapitalize="none"
+                editable={!isLoading}
               />
               {errors.password ? (
                 <Text className="mt-1 text-sm text-red-600">{errors.password}</Text>
@@ -135,6 +161,7 @@ export default function RegisterScreen() {
                 placeholderTextColor="#9CA3AF"
                 secureTextEntry
                 autoCapitalize="none"
+                editable={!isLoading}
               />
               {errors.confirmPassword ? (
                 <Text className="mt-1 text-sm text-red-600">{errors.confirmPassword}</Text>
@@ -143,9 +170,14 @@ export default function RegisterScreen() {
 
             <TouchableOpacity
               onPress={handleSubmit}
-              className="w-full py-3.5 bg-green-600 rounded-lg active:bg-green-700"
+              disabled={isLoading}
+              className={`w-full py-3.5 rounded-lg ${isLoading ? 'bg-green-400' : 'bg-green-600 active:bg-green-700'}`}
             >
-              <Text className="text-white text-center font-semibold text-base">Sign Up</Text>
+              {isLoading ? (
+                <ActivityIndicator color="white" />
+              ) : (
+                <Text className="text-white text-center font-semibold text-base">Sign Up</Text>
+              )}
             </TouchableOpacity>
           </View>
 
@@ -163,4 +195,3 @@ export default function RegisterScreen() {
     </ScrollView>
   );
 }
-

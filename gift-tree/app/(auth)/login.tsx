@@ -1,26 +1,45 @@
 import { useAuth } from '@/contexts/AuthContext';
 import { Link, router } from 'expo-router';
 import { useState } from 'react';
-import { ScrollView, Text, TextInput, TouchableOpacity, View } from 'react-native';
+import {
+  ActivityIndicator,
+  ScrollView,
+  Text,
+  TextInput,
+  TouchableOpacity,
+  View,
+} from 'react-native';
 
 export default function LoginScreen() {
-  const [nicknameOrEmail, setNicknameOrEmail] = useState('');
+  const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
+  const [isLoading, setIsLoading] = useState(false);
   const { signIn } = useAuth();
 
   const handleLogin = async () => {
-    if (!nicknameOrEmail || !password) {
+    if (!email || !password) {
       setError('Please fill in all fields');
       return;
     }
 
+    setIsLoading(true);
+    setError('');
+
     try {
-      // TODO: Validate credentials with backend
-      await signIn(nicknameOrEmail);
+      await signIn(email, password);
       router.replace('/(tabs)');
-    } catch (err) {
-      setError('Invalid credentials');
+    } catch (err: any) {
+      console.error('Login error:', err);
+      if (err?.message?.includes('Invalid credentials')) {
+        setError('Invalid email or password');
+      } else if (err?.message?.includes('Invalid email')) {
+        setError('Please enter a valid email address');
+      } else {
+        setError('Something went wrong. Please try again.');
+      }
+    } finally {
+      setIsLoading(false);
     }
   };
 
@@ -51,14 +70,16 @@ export default function LoginScreen() {
             ) : null}
 
             <View className="mb-4">
-              <Text className="text-sm text-gray-700 font-medium mb-2">Nickname or Email</Text>
+              <Text className="text-sm text-gray-700 font-medium mb-2">Email</Text>
               <TextInput
-                value={nicknameOrEmail}
-                onChangeText={setNicknameOrEmail}
+                value={email}
+                onChangeText={setEmail}
                 className="w-full px-4 py-3 rounded-lg border border-gray-300 bg-white text-gray-900"
-                placeholder="Enter your nickname or email"
+                placeholder="Enter your email"
                 placeholderTextColor="#9CA3AF"
+                keyboardType="email-address"
                 autoCapitalize="none"
+                editable={!isLoading}
               />
             </View>
 
@@ -72,20 +93,26 @@ export default function LoginScreen() {
                 placeholderTextColor="#9CA3AF"
                 secureTextEntry
                 autoCapitalize="none"
+                editable={!isLoading}
               />
             </View>
 
             <Link href="/(auth)/reset-password" asChild>
-              <TouchableOpacity className="self-end mb-4">
+              <TouchableOpacity className="self-end mb-4" disabled={isLoading}>
                 <Text className="text-green-600 text-sm">Forgot password?</Text>
               </TouchableOpacity>
             </Link>
 
             <TouchableOpacity
               onPress={handleLogin}
-              className="w-full py-3.5 bg-green-600 rounded-lg active:bg-green-700"
+              disabled={isLoading}
+              className={`w-full py-3.5 rounded-lg ${isLoading ? 'bg-green-400' : 'bg-green-600 active:bg-green-700'}`}
             >
-              <Text className="text-white text-center font-semibold text-base">Log In</Text>
+              {isLoading ? (
+                <ActivityIndicator color="white" />
+              ) : (
+                <Text className="text-white text-center font-semibold text-base">Log In</Text>
+              )}
             </TouchableOpacity>
           </View>
 
@@ -103,4 +130,3 @@ export default function LoginScreen() {
     </ScrollView>
   );
 }
-
