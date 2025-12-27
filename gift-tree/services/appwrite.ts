@@ -1,12 +1,12 @@
 import {
-    Account,
-    Client,
-    Databases,
-    ID,
-    Models,
-    Permission,
-    Role,
-    TablesDB,
+  Account,
+  Client,
+  Databases,
+  ID,
+  Models,
+  Permission,
+  Role,
+  TablesDB,
 } from "react-native-appwrite";
 
 // Appwrite configuration
@@ -77,8 +77,7 @@ export async function createUser(
     });
 
     return newUser;
-  } catch (error: any) {
-    console.error("Error creating user:", error);
+  } catch (error) {
     throw error;
   }
 }
@@ -87,30 +86,20 @@ export async function signIn(
   email: string,
   password: string,
 ): Promise<AuthUser> {
-  try {
-    // Create email session
-    await account.createEmailPasswordSession({ email, password });
+  // Create email session
+  await account.createEmailPasswordSession({ email, password });
 
-    // Get current user
-    const currentUser = await getCurrentUser();
-    if (!currentUser) {
-      throw new Error("Failed to get current user after sign in");
-    }
-
-    return currentUser;
-  } catch (error: any) {
-    console.error("Error signing in:", error);
-    throw error;
+  // Get current user
+  const currentUser = await getCurrentUser();
+  if (!currentUser) {
+    throw new Error("Failed to get current user after sign in");
   }
+
+  return currentUser;
 }
 
 export async function signOut(): Promise<void> {
-  try {
-    await account.deleteSession({ sessionId: "current" });
-  } catch (error: any) {
-    console.error("Error signing out:", error);
-    throw error;
-  }
+  await account.deleteSession({ sessionId: "current" });
 }
 
 export async function getCurrentUser(): Promise<AuthUser | null> {
@@ -144,13 +133,8 @@ export async function getUserProfile(
 }
 
 export async function sendPasswordReset(email: string): Promise<void> {
-  try {
-    // Deep link URL - Appwrite will append ?userId=xxx&secret=yyy
-    await account.createRecovery({ email, url: "gifttree://reset-password" });
-  } catch (error: any) {
-    console.error("Error sending password reset:", error);
-    throw error;
-  }
+  // Deep link URL - Appwrite will append ?userId=xxx&secret=yyy
+  await account.createRecovery({ email, url: "gifttree://reset-password" });
 }
 
 export async function completePasswordReset(
@@ -158,12 +142,7 @@ export async function completePasswordReset(
   secret: string,
   newPassword: string,
 ): Promise<void> {
-  try {
-    await account.updateRecovery({ userId, secret, password: newPassword });
-  } catch (error: any) {
-    console.error("Error completing password reset:", error);
-    throw error;
-  }
+  await account.updateRecovery({ userId, secret, password: newPassword });
 }
 
 export { ID };
