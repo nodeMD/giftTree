@@ -122,11 +122,23 @@ export async function getUserProfile(userId: string): Promise<UserProfile | null
 
 export async function sendPasswordReset(email: string): Promise<void> {
   try {
-    // URL where user will be redirected to reset password
-    // For mobile apps, you might want to use deep linking
-    await account.createRecovery({email, url: 'https://your-app.com/reset-password'});
+    // Deep link URL - Appwrite will append ?userId=xxx&secret=yyy
+    await account.createRecovery({ email, url: 'gifttree://reset-password' });
   } catch (error: any) {
     console.error('Error sending password reset:', error);
+    throw error;
+  }
+}
+
+export async function completePasswordReset(
+  userId: string,
+  secret: string,
+  newPassword: string
+): Promise<void> {
+  try {
+    await account.updateRecovery({ userId, secret, password: newPassword });
+  } catch (error: any) {
+    console.error('Error completing password reset:', error);
     throw error;
   }
 }
