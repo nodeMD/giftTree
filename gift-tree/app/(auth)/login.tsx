@@ -125,7 +125,7 @@ export default function LoginScreen() {
           {/* Footer */}
           <View className="mt-8 items-center">
             <Text className="text-gray-500 text-sm">
-              Don't have an account?{" "}
+              Don&apos;t have an account?{" "}
               <Link href="/(auth)/register" asChild>
                 <Text className="text-green-600 font-medium">Sign up</Text>
               </Link>

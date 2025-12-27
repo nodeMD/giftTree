@@ -5,8 +5,8 @@ import { useState } from "react";
 import { Text, TouchableOpacity, View } from "react-native";
 
 export default function SettingsScreen() {
-  const { user, signOut } = useAuth();
-  const [theme, setTheme] = useState<"light" | "dark">("light");
+  const { signOut } = useAuth();
+  const [theme] = useState<"light" | "dark">("light");
 
   const handleLogout = async () => {
     await signOut();

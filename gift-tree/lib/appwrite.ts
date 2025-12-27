@@ -1,12 +1,12 @@
 import {
-  Account,
-  Client,
-  Databases,
-  ID,
-  Models,
-  Permission,
-  Role,
-  TablesDB,
+    Account,
+    Client,
+    Databases,
+    ID,
+    Models,
+    Permission,
+    Role,
+    TablesDB,
 } from "react-native-appwrite";
 
 // Appwrite configuration
@@ -121,8 +121,8 @@ export async function getCurrentUser(): Promise<AuthUser | null> {
       email: currentAccount.email,
       name: currentAccount.name,
     };
-  } catch (error: any) {
-    // User is not logged in
+  } catch {
+    // User is not logged in (expected when no session exists)
     return null;
   }
 }

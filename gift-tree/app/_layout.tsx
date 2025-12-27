@@ -21,7 +21,7 @@ function RootLayoutNav() {
       // User is signed in but still on auth screens
       router.replace("/(tabs)");
     }
-  }, [user, segments, isLoading]);
+  }, [user, segments, isLoading, router]);
 
   if (isLoading) {
     return (
