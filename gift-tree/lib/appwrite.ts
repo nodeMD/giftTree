@@ -1,0 +1,135 @@
+import { Account, Client, Databases, ID, Models, Permission, Role, TablesDB } from 'react-native-appwrite';
+
+// Appwrite configuration
+export const appwriteConfig = {
+  endpoint: process.env.EXPO_PUBLIC_APPWRITE_ENDPOINT!,
+  projectId: process.env.EXPO_PUBLIC_APPWRITE_PROJECT_ID!,
+  databaseId: process.env.EXPO_PUBLIC_APPWRITE_DATABASE_ID!,
+  usersCollectionId: process.env.EXPO_PUBLIC_APPWRITE_USERS_COLLECTION_ID!,
+};
+
+// Initialize Appwrite client
+const client = new Client()
+  .setEndpoint(appwriteConfig.endpoint)
+  .setProject(appwriteConfig.projectId);
+
+const tablesDB = new TablesDB(client);
+// Initialize Appwrite services
+export const account = new Account(client);
+export const databases = new Databases(client);
+
+// Types
+export interface UserProfile extends Models.Row {
+  nickname: string;
+  email: string;
+}
+
+export interface AuthUser {
+  $id: string;
+  email: string;
+  name: string;
+}
+
+// Auth functions
+export async function createUser(email: string, password: string, nickname: string): Promise<UserProfile> {
+  try {
+    // Create auth account
+    const newAccount = await account.create({userId: ID.unique(), email, password, name: nickname});
+
+    if (!newAccount) {
+      throw new Error('Failed to create account');
+    }
+
+    // Sign in to create session
+    await signIn(email, password);
+
+    // Create user profile in database
+    const newUser = await tablesDB.createRow<UserProfile>({
+      databaseId: appwriteConfig.databaseId,
+      tableId: appwriteConfig.usersCollectionId,
+      rowId: newAccount.$id,
+      data: {
+        nickname,
+        email,
+      },
+      permissions: [
+        Permission.read(Role.user(newAccount.$id)),
+        Permission.write(Role.user(newAccount.$id)),
+      ]
+    });
+
+    return newUser;
+  } catch (error: any) {
+    console.error('Error creating user:', error);
+    throw error;
+  }
+}
+
+export async function signIn(email: string, password: string): Promise<AuthUser> {
+  try {
+    // Create email session
+    await account.createEmailPasswordSession({email, password});
+
+    // Get current user
+    const currentUser = await getCurrentUser();
+    if (!currentUser) {
+      throw new Error('Failed to get current user after sign in');
+    }
+
+    return currentUser;
+  } catch (error: any) {
+    console.error('Error signing in:', error);
+    throw error;
+  }
+}
+
+export async function signOut(): Promise<void> {
+  try {
+    await account.deleteSession({sessionId: 'current'});
+  } catch (error: any) {
+    console.error('Error signing out:', error);
+    throw error;
+  }
+}
+
+export async function getCurrentUser(): Promise<AuthUser | null> {
+  try {
+    const currentAccount = await account.get();
+    return {
+      $id: currentAccount.$id,
+      email: currentAccount.email,
+      name: currentAccount.name,
+    };
+  } catch (error: any) {
+    // User is not logged in
+    return null;
+  }
+}
+
+export async function getUserProfile(userId: string): Promise<UserProfile | null> {
+  try {
+    const userProfile = await tablesDB.getRow<UserProfile>({
+      databaseId: appwriteConfig.databaseId,
+      tableId: appwriteConfig.usersCollectionId,
+      rowId: userId
+    });
+    return userProfile;
+  } catch (error: any) {
+    console.error('Error getting user profile:', error);
+    return null;
+  }
+}
+
+export async function sendPasswordReset(email: string): Promise<void> {
+  try {
+    // URL where user will be redirected to reset password
+    // For mobile apps, you might want to use deep linking
+    await account.createRecovery({email, url: 'https://your-app.com/reset-password'});
+  } catch (error: any) {
+    console.error('Error sending password reset:', error);
+    throw error;
+  }
+}
+
+export { ID };
+
