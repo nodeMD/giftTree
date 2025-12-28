@@ -26,18 +26,20 @@ export default function HomeScreen() {
   };
 
   return (
-    <View className="flex-1 bg-white">
+    <View className="flex-1 bg-background dark:bg-background-dark">
       {/* Header */}
       <View className="px-4 pt-12 pb-4">
         <View className="flex-row justify-between items-center">
-          <Text className="text-gray-500 text-sm">Progress</Text>
-          <Text className="text-gray-500 text-sm">
+          <Text className="text-foreground-secondary dark:text-foreground-dark-secondary text-sm">
+            Progress
+          </Text>
+          <Text className="text-foreground-secondary dark:text-foreground-dark-secondary text-sm">
             {clickCount.toLocaleString()}/{MAX_CLICKS.toLocaleString()}
           </Text>
         </View>
-        <View className="h-2 bg-gray-200 rounded-full mt-2 overflow-hidden">
+        <View className="h-2 bg-background-tertiary dark:bg-background-dark-tertiary rounded-full mt-2 overflow-hidden">
           <View
-            className="h-2 bg-green-600 rounded-full"
+            className="h-2 bg-primary rounded-full"
             style={{ width: `${progressPercent}%` }}
           />
         </View>
@@ -46,10 +48,12 @@ export default function HomeScreen() {
       {/* Main Content */}
       <View className="flex-1 items-center justify-center p-4">
         {/* GIF */}
-        <View className="w-full aspect-square max-w-xs bg-gray-100 rounded-2xl items-center justify-center mb-8 overflow-hidden">
-          {loading && <ActivityIndicator size="large" color="#16A34A" />}
+        <View className="w-full aspect-square max-w-xs bg-background-secondary dark:bg-background-dark-secondary rounded-2xl items-center justify-center mb-8 overflow-hidden">
+          {loading && (
+            <ActivityIndicator size="large" color="#16A34A" />
+          )}
           {error && (
-            <Text className="text-red-500 px-4 text-center">
+            <Text className="text-danger px-4 text-center">
               Error: {error.message}
             </Text>
           )}
@@ -67,7 +71,7 @@ export default function HomeScreen() {
           onPress={handleClick}
           disabled={loading}
           className={`w-full max-w-xs py-4 rounded-xl ${
-            loading ? "bg-green-400" : "bg-green-600 active:bg-green-700"
+            loading ? "bg-primary-light" : "bg-primary active:bg-primary-dark"
           }`}
         >
           <Text className="text-white text-center font-semibold text-base">
@@ -77,8 +81,10 @@ export default function HomeScreen() {
       </View>
 
       {/* Ad Banner Placeholder */}
-      <View className="h-16 bg-gray-100 items-center justify-center">
-        <Text className="text-gray-400 text-sm">Ad Banner Placeholder</Text>
+      <View className="h-16 bg-background-secondary dark:bg-background-dark-secondary items-center justify-center">
+        <Text className="text-foreground-muted dark:text-foreground-dark-muted text-sm">
+          Ad Banner Placeholder
+        </Text>
       </View>
     </View>
   );

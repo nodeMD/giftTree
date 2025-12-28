@@ -92,7 +92,7 @@ export default function ResetPasswordScreen() {
   };
 
   return (
-    <ScrollView className="flex-1 bg-white">
+    <ScrollView className="flex-1 bg-background dark:bg-background-dark">
       <View className="flex-1 items-center justify-center p-6 min-h-screen">
         <View className="w-full max-w-sm">
           {/* Logo */}
@@ -104,16 +104,18 @@ export default function ResetPasswordScreen() {
               className="flex-row items-center mb-6"
               disabled={isLoading}
             >
-              <Text className="text-gray-500 text-sm">← Back to login</Text>
+              <Text className="text-foreground-secondary dark:text-foreground-dark-secondary text-sm">
+                ← Back to login
+              </Text>
             </TouchableOpacity>
           </Link>
 
           {/* Header */}
           <View className="items-center mb-6">
-            <Text className="text-2xl font-semibold text-gray-900 mb-2">
+            <Text className="text-2xl font-semibold text-foreground dark:text-foreground-dark mb-2">
               {isRecoveryMode ? "Set New Password" : "Reset Password"}
             </Text>
-            <Text className="text-gray-500 text-sm text-center">
+            <Text className="text-foreground-secondary dark:text-foreground-dark-secondary text-sm text-center">
               {isRecoveryMode
                 ? "Enter your new password below"
                 : "Enter your email to receive password reset instructions"}
@@ -123,14 +125,14 @@ export default function ResetPasswordScreen() {
           {/* Form */}
           <View className="space-y-4">
             {error ? (
-              <View className="p-3 rounded-lg bg-red-50 border border-red-200 mb-4">
-                <Text className="text-red-600 text-sm">{error}</Text>
+              <View className="p-3 rounded-lg bg-danger-light dark:bg-danger/20 border border-danger-border dark:border-danger/30 mb-4">
+                <Text className="text-danger text-sm">{error}</Text>
               </View>
             ) : null}
 
             {success ? (
-              <View className="p-3 rounded-lg bg-green-50 border border-green-200 mb-4">
-                <Text className="text-green-600 text-sm">
+              <View className="p-3 rounded-lg bg-primary-50 dark:bg-primary/20 border border-primary-200 dark:border-primary/30 mb-4">
+                <Text className="text-primary text-sm">
                   {isRecoveryMode
                     ? "Password reset successful! Redirecting to login..."
                     : "Reset instructions sent! Check your email."}
@@ -144,13 +146,13 @@ export default function ResetPasswordScreen() {
                   // Complete Reset Form (when opened via deep link)
                   <>
                     <View className="mb-4">
-                      <Text className="text-sm text-gray-700 font-medium mb-2">
+                      <Text className="text-sm text-foreground dark:text-foreground-dark font-medium mb-2">
                         New Password
                       </Text>
                       <TextInput
                         value={newPassword}
                         onChangeText={setNewPassword}
-                        className="w-full px-4 py-3 rounded-lg border border-gray-300 bg-white text-gray-900"
+                        className="w-full px-4 py-3 rounded-lg border border-border dark:border-border-dark bg-background dark:bg-background-dark-secondary text-foreground dark:text-foreground-dark"
                         placeholder="Enter new password"
                         placeholderTextColor="#9CA3AF"
                         secureTextEntry
@@ -160,13 +162,13 @@ export default function ResetPasswordScreen() {
                     </View>
 
                     <View className="mb-6">
-                      <Text className="text-sm text-gray-700 font-medium mb-2">
+                      <Text className="text-sm text-foreground dark:text-foreground-dark font-medium mb-2">
                         Confirm Password
                       </Text>
                       <TextInput
                         value={confirmPassword}
                         onChangeText={setConfirmPassword}
-                        className="w-full px-4 py-3 rounded-lg border border-gray-300 bg-white text-gray-900"
+                        className="w-full px-4 py-3 rounded-lg border border-border dark:border-border-dark bg-background dark:bg-background-dark-secondary text-foreground dark:text-foreground-dark"
                         placeholder="Confirm new password"
                         placeholderTextColor="#9CA3AF"
                         secureTextEntry
@@ -178,7 +180,7 @@ export default function ResetPasswordScreen() {
                     <TouchableOpacity
                       onPress={handleCompleteReset}
                       disabled={isLoading}
-                      className={`w-full py-3.5 rounded-lg ${isLoading ? "bg-green-400" : "bg-green-600 active:bg-green-700"}`}
+                      className={`w-full py-3.5 rounded-lg ${isLoading ? "bg-primary-light" : "bg-primary active:bg-primary-dark"}`}
                     >
                       {isLoading ? (
                         <ActivityIndicator color="white" />
@@ -193,13 +195,13 @@ export default function ResetPasswordScreen() {
                   // Request Reset Form (default)
                   <>
                     <View className="mb-6">
-                      <Text className="text-sm text-gray-700 font-medium mb-2">
+                      <Text className="text-sm text-foreground dark:text-foreground-dark font-medium mb-2">
                         Email
                       </Text>
                       <TextInput
                         value={email}
                         onChangeText={setEmail}
-                        className="w-full px-4 py-3 rounded-lg border border-gray-300 bg-white text-gray-900"
+                        className="w-full px-4 py-3 rounded-lg border border-border dark:border-border-dark bg-background dark:bg-background-dark-secondary text-foreground dark:text-foreground-dark"
                         placeholder="Enter your email"
                         placeholderTextColor="#9CA3AF"
                         keyboardType="email-address"
@@ -211,7 +213,7 @@ export default function ResetPasswordScreen() {
                     <TouchableOpacity
                       onPress={handleRequestReset}
                       disabled={isLoading}
-                      className={`w-full py-3.5 rounded-lg ${isLoading ? "bg-green-400" : "bg-green-600 active:bg-green-700"}`}
+                      className={`w-full py-3.5 rounded-lg ${isLoading ? "bg-primary-light" : "bg-primary active:bg-primary-dark"}`}
                     >
                       {isLoading ? (
                         <ActivityIndicator color="white" />
