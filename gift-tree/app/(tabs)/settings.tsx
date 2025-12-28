@@ -139,7 +139,13 @@ export default function SettingsScreen() {
                           : "phone-portrait"
                     }
                     size={20}
-                    color={theme === option ? "#16A34A" : isDark ? "#9CA3AF" : "#6B7280"}
+                    color={
+                      theme === option
+                        ? "#16A34A"
+                        : isDark
+                          ? "#9CA3AF"
+                          : "#6B7280"
+                    }
                   />
                   <Text
                     className={`ml-3 text-base ${

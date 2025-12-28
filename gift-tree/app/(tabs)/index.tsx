@@ -49,9 +49,7 @@ export default function HomeScreen() {
       <View className="flex-1 items-center justify-center p-4">
         {/* GIF */}
         <View className="w-full aspect-square max-w-xs bg-background-secondary dark:bg-background-dark-secondary rounded-2xl items-center justify-center mb-8 overflow-hidden">
-          {loading && (
-            <ActivityIndicator size="large" color="#16A34A" />
-          )}
+          {loading && <ActivityIndicator size="large" color="#16A34A" />}
           {error && (
             <Text className="text-danger px-4 text-center">
               Error: {error.message}

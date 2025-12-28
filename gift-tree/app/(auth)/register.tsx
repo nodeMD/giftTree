@@ -116,9 +116,7 @@ export default function RegisterScreen() {
                 editable={!isLoading}
               />
               {errors.email ? (
-                <Text className="mt-1 text-sm text-danger">
-                  {errors.email}
-                </Text>
+                <Text className="mt-1 text-sm text-danger">{errors.email}</Text>
               ) : null}
             </View>
 

@@ -3,6 +3,7 @@ import { useColorScheme } from "nativewind";
 import {
     createContext,
     ReactNode,
+    useCallback,
     useContext,
     useEffect,
     useState,
@@ -25,12 +26,7 @@ export function ThemeProvider({ children }: { children: ReactNode }) {
   const [theme, setThemeState] = useState<ThemeMode>("system");
   const [isLoaded, setIsLoaded] = useState(false);
 
-  // Load saved theme preference
-  useEffect(() => {
-    loadTheme();
-  }, []);
-
-  const loadTheme = async () => {
+  const loadTheme = useCallback(async () => {
     try {
       const savedTheme = await AsyncStorage.getItem(THEME_STORAGE_KEY);
       if (savedTheme && ["light", "dark", "system"].includes(savedTheme)) {
@@ -44,7 +40,12 @@ export function ThemeProvider({ children }: { children: ReactNode }) {
     } finally {
       setIsLoaded(true);
     }
-  };
+  }, [setColorScheme]);
+
+  // Load saved theme preference
+  useEffect(() => {
+    loadTheme();
+  }, [loadTheme]);
 
   const setTheme = async (newTheme: ThemeMode) => {
     setThemeState(newTheme);
@@ -84,4 +85,3 @@ export function useTheme() {
   }
   return context;
 }
-
