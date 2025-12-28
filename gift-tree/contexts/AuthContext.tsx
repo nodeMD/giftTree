@@ -4,6 +4,7 @@ import {
   createUser,
   getCurrentUser,
   getUserProfile,
+  updateClickCount as appwriteUpdateClickCount,
 } from "@/services/appwrite";
 import {
   createContext,
@@ -17,6 +18,7 @@ interface User {
   id: string;
   email: string;
   nickname: string;
+  clickCount: number;
 }
 
 interface AuthContextType {
@@ -25,6 +27,7 @@ interface AuthContextType {
   signIn: (email: string, password: string) => Promise<void>;
   signUp: (email: string, password: string, nickname: string) => Promise<void>;
   signOut: () => Promise<void>;
+  incrementClickCount: () => Promise<void>;
 }
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
@@ -46,6 +49,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
           id: currentUser.$id,
           email: currentUser.email,
           nickname: profile?.nickName || currentUser.name || "User",
+          clickCount: profile?.clickCount || 0,
         });
       } else {
         setUser(null);
@@ -66,6 +70,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
         id: authUser.$id,
         email: authUser.email,
         nickname: profile?.nickName || authUser.name || "User",
+        clickCount: profile?.clickCount || 0,
       });
     } catch (error) {
       console.error("Error signing in:", error);
@@ -80,6 +85,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
         id: profile.$id,
         email: profile.email,
         nickname: profile.nickName,
+        clickCount: 0,
       });
     } catch (error) {
       console.error("Error signing up:", error);
@@ -97,8 +103,30 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     }
   };
 
+  const incrementClickCount = async () => {
+    if (!user) return;
+
+    const MAX_CLICKS = 5000;
+    // Reset to 0 if we've reached the max, otherwise increment
+    const newCount = user.clickCount >= MAX_CLICKS ? 0 : user.clickCount + 1;
+
+    // Update local state immediately for responsiveness
+    setUser({ ...user, clickCount: newCount });
+
+    // Persist to database
+    try {
+      await appwriteUpdateClickCount(user.id, newCount);
+    } catch (error) {
+      console.error("Error updating click count:", error);
+      // Revert on error
+      setUser({ ...user, clickCount: user.clickCount });
+    }
+  };
+
   return (
-    <AuthContext.Provider value={{ user, isLoading, signIn, signUp, signOut }}>
+    <AuthContext.Provider
+      value={{ user, isLoading, signIn, signUp, signOut, incrementClickCount }}
+    >
       {children}
     </AuthContext.Provider>
   );
