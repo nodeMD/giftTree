@@ -48,7 +48,7 @@ export default function HomeScreen() {
             Progress (keep 50 clicks per day 🌲)
           </Text>
           <Text className="text-foreground-secondary dark:text-foreground-dark-secondary text-sm">
-            {clickCount.toLocaleString()}/{MAX_CLICKS.toLocaleString()}
+            {clickCount.toLocaleString()} / {MAX_CLICKS.toLocaleString()}
           </Text>
         </View>
         <View className="h-2 bg-background-tertiary dark:bg-background-dark-tertiary rounded-full mt-2 overflow-hidden">
