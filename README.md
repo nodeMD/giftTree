@@ -1,3 +1,5 @@
+![example workflow](https://github.com/nodeMD/giftTree/actions/workflows/ci.yml/badge.svg)
+
 # Gift Tree 🌲
 
 A React Native mobile app that gamifies tree planting through user engagement. Click to view cat GIFs, track your progress, and unlock virtual trees!
