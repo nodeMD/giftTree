@@ -1,10 +1,11 @@
 import {
+  deleteAccount as appwriteDeleteAccount,
   signIn as appwriteSignIn,
   signOut as appwriteSignOut,
+  updateClickCount as appwriteUpdateClickCount,
   createUser,
   getCurrentUser,
   getUserProfile,
-  updateClickCount as appwriteUpdateClickCount,
 } from "@/services/appwrite";
 import {
   createContext,
@@ -27,6 +28,7 @@ interface AuthContextType {
   signIn: (email: string, password: string) => Promise<void>;
   signUp: (email: string, password: string, nickname: string) => Promise<void>;
   signOut: () => Promise<void>;
+  deleteAccount: () => Promise<void>;
   incrementClickCount: () => Promise<void>;
 }
 
@@ -103,6 +105,17 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     }
   };
 
+  const deleteAccount = async () => {
+    if (!user) return;
+    try {
+      await appwriteDeleteAccount(user.id);
+      setUser(null);
+    } catch (error) {
+      console.error("Error deleting account:", error);
+      throw error;
+    }
+  };
+
   const incrementClickCount = async () => {
     if (!user) return;
 
@@ -125,7 +138,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
 
   return (
     <AuthContext.Provider
-      value={{ user, isLoading, signIn, signUp, signOut, incrementClickCount }}
+      value={{ user, isLoading, signIn, signUp, signOut, deleteAccount, incrementClickCount }}
     >
       {children}
     </AuthContext.Provider>
