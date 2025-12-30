@@ -1,3 +1,4 @@
+import { MAX_CLICKS } from "@/constants/app";
 import { useAuth } from "@/contexts/AuthContext";
 import { fetchCatGif } from "@/services/api";
 import useFetch from "@/services/useFetch";
@@ -9,8 +10,6 @@ import {
   TouchableOpacity,
   View,
 } from "react-native";
-
-const MAX_CLICKS = 1500;
 
 export default function HomeScreen() {
   const { user, incrementClickCount } = useAuth();

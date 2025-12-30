@@ -1,3 +1,4 @@
+import { MAX_CLICKS } from "@/constants/app";
 import {
   deleteAccount as appwriteDeleteAccount,
   signIn as appwriteSignIn,
@@ -124,7 +125,6 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   const incrementClickCount = async () => {
     if (!user) return;
 
-    const MAX_CLICKS = 1500;
     const goalReached = user.clickCount >= MAX_CLICKS;
     // Reset to 0 if we've reached the max, otherwise increment
     const newCount = goalReached ? 0 : user.clickCount + 1;
