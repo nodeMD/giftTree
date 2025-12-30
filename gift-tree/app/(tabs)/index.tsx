@@ -1,6 +1,7 @@
 import { useAuth } from "@/contexts/AuthContext";
 import { fetchCatGif } from "@/services/api";
 import useFetch from "@/services/useFetch";
+import { useEffect, useState } from "react";
 import {
   ActivityIndicator,
   Image,
@@ -16,11 +17,21 @@ export default function HomeScreen() {
   const { data, loading, error, refetch } = useFetch<{ url: string }>(
     fetchCatGif,
   );
+  const [imageLoaded, setImageLoaded] = useState(false);
+
+  // Increment counter on initial page load (when first GIF is shown)
+  useEffect(() => {
+    incrementClickCount();
+  }, []);
 
   const clickCount = user?.clickCount || 0;
   const progressPercent = Math.min((clickCount / MAX_CLICKS) * 100, 100);
 
+  // Show loader while API is fetching OR image is still loading
+  const isLoading = loading || (data && !imageLoaded);
+
   const handleClick = async () => {
+    setImageLoaded(false); // Reset image loading state
     await incrementClickCount();
     refetch();
   };
@@ -49,17 +60,18 @@ export default function HomeScreen() {
       <View className="flex-1 items-center justify-center p-4">
         {/* GIF */}
         <View className="w-full aspect-square max-w-xs bg-background-secondary dark:bg-background-dark-secondary rounded-2xl items-center justify-center mb-8 overflow-hidden">
-          {loading && <ActivityIndicator size="large" color="#16A34A" />}
+          {isLoading && <ActivityIndicator size="large" color="#16A34A" />}
           {error && (
             <Text className="text-danger px-4 text-center">
               Error: {error.message}
             </Text>
           )}
-          {data && !loading && (
+          {data && (
             <Image
               source={{ uri: data.url }}
-              className="w-full h-full"
+              className={`w-full h-full ${!imageLoaded ? "opacity-0 absolute" : ""}`}
               resizeMode="cover"
+              onLoad={() => setImageLoaded(true)}
             />
           )}
         </View>
@@ -67,9 +79,9 @@ export default function HomeScreen() {
         {/* Action Button */}
         <TouchableOpacity
           onPress={handleClick}
-          disabled={loading}
+          disabled={!!isLoading}
           className={`w-full max-w-xs py-4 rounded-xl ${
-            loading ? "bg-primary-light" : "bg-primary active:bg-primary-dark"
+            isLoading ? "bg-primary-light" : "bg-primary active:bg-primary-dark"
           }`}
         >
           <Text className="text-white text-center font-semibold text-base">
