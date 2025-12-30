@@ -1,16 +1,19 @@
+import { useTheme } from "@/contexts/ThemeContext";
 import Ionicons from "@expo/vector-icons/Ionicons";
 import { Tabs } from "expo-router";
 
 export default function TabsLayout() {
+  const { isDark } = useTheme();
+
   return (
     <Tabs
       screenOptions={{
         headerShown: false,
         tabBarActiveTintColor: "#16A34A",
-        tabBarInactiveTintColor: "#9CA3AF",
+        tabBarInactiveTintColor: isDark ? "#6B7280" : "#9CA3AF",
         tabBarStyle: {
-          backgroundColor: "#FFFFFF",
-          borderTopColor: "#E5E7EB",
+          backgroundColor: isDark ? "#111827" : "#FFFFFF",
+          borderTopColor: isDark ? "#374151" : "#E5E7EB",
           paddingBottom: 8,
           paddingTop: 8,
           height: 60,

@@ -31,6 +31,7 @@ export const databases = new Databases(client);
 export interface UserProfile extends Models.Row {
   nickName: string;
   email: string;
+  clickCount?: number;
 }
 
 export interface AuthUser {
@@ -143,6 +144,18 @@ export async function completePasswordReset(
   newPassword: string,
 ): Promise<void> {
   await account.updateRecovery({ userId, secret, password: newPassword });
+}
+
+export async function updateClickCount(
+  userId: string,
+  clickCount: number,
+): Promise<void> {
+  await tablesDB.updateRow({
+    databaseId: appwriteConfig.databaseId,
+    tableId: appwriteConfig.usersCollectionId,
+    rowId: userId,
+    data: { clickCount },
+  });
 }
 
 export { ID };

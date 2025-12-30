@@ -75,10 +75,10 @@ export default function LoginScreen() {
 
           {/* Header */}
           <View className="items-center mb-8">
-            <Text className="text-2xl font-semibold text-gray-900 mb-1">
+            <Text className="text-2xl font-semibold text-foreground dark:text-foreground-dark mb-1">
               Welcome Back
             </Text>
-            <Text className="text-gray-500 text-sm">
+            <Text className="text-foreground-secondary dark:text-foreground-dark-secondary text-sm">
               Log in to continue planting trees
             </Text>
           </View>
@@ -86,19 +86,19 @@ export default function LoginScreen() {
           {/* Form */}
           <View className="space-y-4">
             {error ? (
-              <View className="p-3 rounded-lg bg-red-50 border border-red-200 mb-4">
-                <Text className="text-red-600 text-sm">{error}</Text>
+              <View className="p-3 rounded-lg bg-danger-light dark:bg-danger/20 border border-danger-border dark:border-danger/30 mb-4">
+                <Text className="text-danger text-sm">{error}</Text>
               </View>
             ) : null}
 
             <View className="mb-4">
-              <Text className="text-sm text-gray-700 font-medium mb-2">
+              <Text className="text-sm text-foreground dark:text-foreground-dark font-medium mb-2">
                 Email
               </Text>
               <TextInput
                 value={email}
                 onChangeText={setEmail}
-                className="w-full px-4 py-3 rounded-lg border border-gray-300 bg-white text-gray-900"
+                className="w-full px-4 py-3 rounded-lg border border-border dark:border-border-dark bg-background dark:bg-background-dark-secondary text-foreground dark:text-foreground-dark"
                 placeholder="Enter your email"
                 placeholderTextColor="#9CA3AF"
                 keyboardType="email-address"
@@ -108,13 +108,13 @@ export default function LoginScreen() {
             </View>
 
             <View className="mb-2">
-              <Text className="text-sm text-gray-700 font-medium mb-2">
+              <Text className="text-sm text-foreground dark:text-foreground-dark font-medium mb-2">
                 Password
               </Text>
               <TextInput
                 value={password}
                 onChangeText={setPassword}
-                className="w-full px-4 py-3 rounded-lg border border-gray-300 bg-white text-gray-900"
+                className="w-full px-4 py-3 rounded-lg border border-border dark:border-border-dark bg-background dark:bg-background-dark-secondary text-foreground dark:text-foreground-dark"
                 placeholder="Enter your password"
                 placeholderTextColor="#9CA3AF"
                 secureTextEntry
@@ -125,14 +125,14 @@ export default function LoginScreen() {
 
             <Link href="/(auth)/reset-password" asChild>
               <TouchableOpacity className="self-end mb-4" disabled={isLoading}>
-                <Text className="text-green-600 text-sm">Forgot password?</Text>
+                <Text className="text-primary text-sm">Forgot password?</Text>
               </TouchableOpacity>
             </Link>
 
             <TouchableOpacity
               onPress={handleLogin}
               disabled={isLoading}
-              className={`w-full py-3.5 rounded-lg ${isLoading ? "bg-green-400" : "bg-green-600 active:bg-green-700"}`}
+              className={`w-full py-3.5 rounded-lg ${isLoading ? "bg-primary-light" : "bg-primary active:bg-primary-dark"}`}
             >
               {isLoading ? (
                 <ActivityIndicator color="white" />
@@ -146,10 +146,10 @@ export default function LoginScreen() {
 
           {/* Footer */}
           <View className="mt-8 items-center">
-            <Text className="text-gray-500 text-sm">
+            <Text className="text-foreground-secondary dark:text-foreground-dark-secondary text-sm">
               Don&apos;t have an account?{" "}
               <Link href="/(auth)/register" asChild>
-                <Text className="text-green-600 font-medium">Sign up</Text>
+                <Text className="text-primary font-medium">Sign up</Text>
               </Link>
             </Text>
           </View>
