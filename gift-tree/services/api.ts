@@ -15,8 +15,7 @@ export const fetchCatGif = async () => {
   });
 
   if (!response.ok) {
-    // @ts-ignore
-    throw new Error("Network response was not ok", response.statusText);
+    throw new Error(`Network response was not ok: ${response.statusText}`);
   }
 
   const data = await response.json();
@@ -32,11 +31,9 @@ export const fetchTreeData = async (query: string, limit: number) => {
   });
 
   if (!response.ok) {
-    // @ts-ignore
-    throw new Error("Network response was not ok", response.statusText);
+    throw new Error(`Network response was not ok: ${response.statusText}`);
   }
 
   const data = await response.json();
-  console.log("Fetched tree data:", data);
   return data;
 };
