@@ -1,50 +1,166 @@
-# Welcome to your Expo app 👋
+# Gift Tree 🌲
 
-This is an [Expo](https://expo.dev) project created with [`create-expo-app`](https://www.npmjs.com/package/create-expo-app).
+A React Native mobile app that gamifies tree planting through user engagement. Click to view cat GIFs, track your progress, and unlock virtual trees!
 
-## Get started
+## Features
 
-1. Install dependencies
+- **Click Counter** - Track progress towards planting goals (1,500 clicks per tree)
+- **Cat GIF Rewards** - View a new cat GIF with each click
+- **Virtual Tree Collection** - Unlock and view trees from the Trefle API
+- **User Authentication** - Sign up, sign in, password reset via Appwrite
+- **Dark/Light Theme** - System-aware theming with manual override
+- **Daily Notifications** - Optional reminders to keep clicking
+- **Progress Persistence** - All progress synced to cloud database
 
-   ```bash
-   npm install
-   ```
+## Tech Stack
 
-2. Start the app
+- **Framework**: [Expo](https://expo.dev) (SDK 54) with [Expo Router](https://docs.expo.dev/router/introduction/)
+- **Language**: TypeScript
+- **Styling**: [NativeWind](https://www.nativewind.dev/) (Tailwind CSS for React Native)
+- **Backend**: [Appwrite](https://appwrite.io/) (Authentication & Database)
+- **APIs**: 
+  - [CATAAS](https://cataas.com/) - Cat as a Service (GIFs)
+  - [Trefle](https://trefle.io/) - Plant/Tree data
+- **Testing**: Jest + React Native Testing Library
 
-   ```bash
-   npx expo start
-   ```
+## Getting Started
 
-In the output, you'll find options to open the app in a
+### Prerequisites
 
-- [development build](https://docs.expo.dev/develop/development-builds/introduction/)
-- [Android emulator](https://docs.expo.dev/workflow/android-studio-emulator/)
-- [iOS simulator](https://docs.expo.dev/workflow/ios-simulator/)
-- [Expo Go](https://expo.dev/go), a limited sandbox for trying out app development with Expo
+- Node.js 18+
+- npm or yarn
+- Expo CLI (`npm install -g expo-cli`)
+- iOS Simulator / Android Emulator / Expo Go app
 
-You can start developing by editing the files inside the **app** directory. This project uses [file-based routing](https://docs.expo.dev/router/introduction).
+### Environment Variables
 
-## Get a fresh project
+Create a `.env` file in the root directory:
 
-When you're ready, run:
+```env
+# Appwrite
+EXPO_PUBLIC_APPWRITE_ENDPOINT=https://cloud.appwrite.io/v1
+EXPO_PUBLIC_APPWRITE_PROJECT_ID=your_project_id
+EXPO_PUBLIC_APPWRITE_DATABASE_ID=your_database_id
+EXPO_PUBLIC_APPWRITE_USERS_COLLECTION_ID=your_users_collection_id
 
-```bash
-npm run reset-project
+# APIs
+EXPO_PUBLIC_CATAAS_API_URL=https://cataas.com/cat/gif?json=true
+EXPO_PUBLIC_TREFLE_API_URL=https://trefle.io/api/v1
+EXPO_PUBLIC_TREFLE_TOKEN=your_trefle_api_token
 ```
 
-This command will move the starter code to the **app-example** directory and create a blank **app** directory where you can start developing.
+### Installation
 
-## Learn more
+1. Clone the repository:
+   ```bash
+   git clone https://github.com/your-username/gift-tree.git
+   cd gift-tree
+   ```
 
-To learn more about developing your project with Expo, look at the following resources:
+2. Install dependencies:
+   ```bash
+   npm install --legacy-peer-deps
+   ```
 
-- [Expo documentation](https://docs.expo.dev/): Learn fundamentals, or go into advanced topics with our [guides](https://docs.expo.dev/guides).
-- [Learn Expo tutorial](https://docs.expo.dev/tutorial/introduction/): Follow a step-by-step tutorial where you'll create a project that runs on Android, iOS, and the web.
+3. Start the development server:
+   ```bash
+   npm start
+   ```
 
-## Join the community
+4. Run on your preferred platform:
+   - Press `i` for iOS Simulator
+   - Press `a` for Android Emulator
+   - Scan QR code with Expo Go app
 
-Join our community of developers creating universal apps.
+## Available Scripts
 
-- [Expo on GitHub](https://github.com/expo/expo): View our open source platform and contribute.
-- [Discord community](https://chat.expo.dev): Chat with Expo users and ask questions.
+| Script | Description |
+|--------|-------------|
+| `npm start` | Start Expo development server |
+| `npm run ios` | Run on iOS Simulator |
+| `npm run android` | Run on Android Emulator |
+| `npm run web` | Run in web browser |
+| `npm run lint` | Run ESLint |
+| `npm run lint:fix` | Fix ESLint errors |
+| `npm test` | Run all tests |
+| `npm run test:watch` | Run tests in watch mode |
+| `npm run test:coverage` | Run tests with coverage report |
+
+## Project Structure
+
+```
+gift-tree/
+├── app/                    # App screens (file-based routing)
+│   ├── (auth)/            # Authentication screens
+│   │   ├── login.tsx
+│   │   ├── register.tsx
+│   │   └── reset-password.tsx
+│   ├── (tabs)/            # Main tab screens
+│   │   ├── index.tsx      # Home (click counter + GIFs)
+│   │   ├── trees.tsx      # Tree collection
+│   │   └── settings.tsx   # User settings
+│   └── _layout.tsx        # Root layout
+├── components/            # Reusable components
+├── constants/             # App constants
+│   ├── app.ts            # App-wide constants (MAX_CLICKS)
+│   └── images.ts         # Image assets
+├── contexts/              # React contexts
+│   ├── AuthContext.tsx   # Authentication state
+│   └── ThemeContext.tsx  # Theme state
+├── services/              # API & external services
+│   ├── api.ts            # External API calls
+│   ├── appwrite.ts       # Appwrite SDK wrapper
+│   ├── notifications.ts  # Push notifications
+│   └── useFetch.ts       # Data fetching hook
+├── __tests__/            # Test files
+│   ├── app/
+│   ├── contexts/
+│   └── services/
+└── __mocks__/            # Jest mocks
+```
+
+## Testing
+
+The project uses Jest and React Native Testing Library with 50+ unit tests covering:
+
+- **AuthContext**: Authentication flows, click counting, goal completion
+- **useFetch Hook**: Data fetching, loading states, error handling
+- **API Services**: Network requests, error responses
+- **Components**: HomeScreen, TreesScreen rendering and interactions
+
+Run tests:
+```bash
+npm test
+```
+
+## CI/CD
+
+GitHub Actions workflow runs on every PR and merge to `master`/`main`:
+
+1. **Lint** - ESLint code quality checks
+2. **Test** - Full test suite execution
+
+See `.github/workflows/ci.yml` for configuration.
+
+## Appwrite Database Schema
+
+### Users Collection
+
+| Attribute | Type | Description |
+|-----------|------|-------------|
+| `nickName` | string | User's display name |
+| `email` | string | User's email |
+| `clickCount` | integer | Current click progress (0-1500) |
+| `completedGoals` | integer | Number of trees unlocked |
+
+## Contributing
+
+1. Fork the repository
+2. Create a feature branch (`git checkout -b feature/amazing-feature`)
+3. Commit your changes (`git commit -m 'Add amazing feature'`)
+4. Push to the branch (`git push origin feature/amazing-feature`)
+5. Open a Pull Request
+
+## License
+
+This project is private and not licensed for public use.
