@@ -3,6 +3,7 @@ import {
   signIn as appwriteSignIn,
   signOut as appwriteSignOut,
   updateClickCount as appwriteUpdateClickCount,
+  updateCompletedGoals as appwriteUpdateCompletedGoals,
   createUser,
   getCurrentUser,
   getUserProfile,
@@ -20,6 +21,7 @@ interface User {
   email: string;
   nickname: string;
   clickCount: number;
+  completedGoals: number;
 }
 
 interface AuthContextType {
@@ -52,6 +54,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
           email: currentUser.email,
           nickname: profile?.nickName || currentUser.name || "User",
           clickCount: profile?.clickCount || 0,
+          completedGoals: profile?.completedGoals || 0,
         });
       } else {
         setUser(null);
@@ -73,6 +76,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
         email: authUser.email,
         nickname: profile?.nickName || authUser.name || "User",
         clickCount: profile?.clickCount || 0,
+        completedGoals: profile?.completedGoals || 0,
       });
     } catch (error) {
       console.error("Error signing in:", error);
@@ -88,6 +92,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
         email: profile.email,
         nickname: profile.nickName,
         clickCount: 0,
+        completedGoals: 0,
       });
     } catch (error) {
       console.error("Error signing up:", error);
@@ -119,20 +124,35 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   const incrementClickCount = async () => {
     if (!user) return;
 
-    const MAX_CLICKS = 5000;
+    const MAX_CLICKS = 1500;
+    const goalReached = user.clickCount >= MAX_CLICKS;
     // Reset to 0 if we've reached the max, otherwise increment
-    const newCount = user.clickCount >= MAX_CLICKS ? 0 : user.clickCount + 1;
+    const newCount = goalReached ? 0 : user.clickCount + 1;
+    const newCompletedGoals = goalReached
+      ? user.completedGoals + 1
+      : user.completedGoals;
 
     // Update local state immediately for responsiveness
-    setUser({ ...user, clickCount: newCount });
+    setUser({
+      ...user,
+      clickCount: newCount,
+      completedGoals: newCompletedGoals,
+    });
 
     // Persist to database
     try {
       await appwriteUpdateClickCount(user.id, newCount);
+      if (goalReached) {
+        await appwriteUpdateCompletedGoals(user.id, newCompletedGoals);
+      }
     } catch (error) {
       console.error("Error updating click count:", error);
       // Revert on error
-      setUser({ ...user, clickCount: user.clickCount });
+      setUser({
+        ...user,
+        clickCount: user.clickCount,
+        completedGoals: user.completedGoals,
+      });
     }
   };
 
