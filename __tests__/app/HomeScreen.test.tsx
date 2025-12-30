@@ -48,7 +48,7 @@ describe("HomeScreen", () => {
     it("should render progress bar with correct count", () => {
       const { getByText } = render(<HomeScreen />);
 
-      expect(getByText("100/1,500")).toBeTruthy();
+      expect(getByText("100 / 1,500")).toBeTruthy();
     });
 
     it("should render the 'Another one!' button", () => {
@@ -151,7 +151,7 @@ describe("HomeScreen", () => {
 
       const { getByText } = render(<HomeScreen />);
 
-      expect(getByText("750/1,500")).toBeTruthy();
+      expect(getByText("750 / 1,500")).toBeTruthy();
     });
 
     it("should cap progress at 100%", () => {
@@ -173,7 +173,7 @@ describe("HomeScreen", () => {
 
       const { getByText } = render(<HomeScreen />);
 
-      expect(getByText("2,000/1,500")).toBeTruthy();
+      expect(getByText("2,000 / 1,500")).toBeTruthy();
     });
   });
 
@@ -191,7 +191,7 @@ describe("HomeScreen", () => {
 
       const { getByText } = render(<HomeScreen />);
 
-      expect(getByText("0/1,500")).toBeTruthy();
+      expect(getByText("0 / 1,500")).toBeTruthy();
     });
   });
 });

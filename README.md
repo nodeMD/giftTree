@@ -56,7 +56,6 @@ EXPO_PUBLIC_TREFLE_TOKEN=your_trefle_api_token
 1. Clone the repository:
    ```bash
    git clone https://github.com/your-username/gift-tree.git
-   cd gift-tree
    ```
 
 2. Install dependencies:
