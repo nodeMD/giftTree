@@ -32,6 +32,7 @@ export interface UserProfile extends Models.Row {
   nickName: string;
   email: string;
   clickCount?: number;
+  completedGoals?: number;
 }
 
 export interface AuthUser {
@@ -155,6 +156,18 @@ export async function updateClickCount(
     tableId: appwriteConfig.usersCollectionId,
     rowId: userId,
     data: { clickCount },
+  });
+}
+
+export async function updateCompletedGoals(
+  userId: string,
+  completedGoals: number,
+): Promise<void> {
+  await tablesDB.updateRow({
+    databaseId: appwriteConfig.databaseId,
+    tableId: appwriteConfig.usersCollectionId,
+    rowId: userId,
+    data: { completedGoals },
   });
 }
 
