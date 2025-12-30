@@ -2,9 +2,9 @@ import Logo from "@/components/Logo";
 import { useAuth } from "@/contexts/AuthContext";
 import { Link, router } from "expo-router";
 import { useState } from "react";
+import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
 import {
   ActivityIndicator,
-  ScrollView,
   Text,
   TextInput,
   TouchableOpacity,
@@ -67,7 +67,7 @@ export default function LoginScreen() {
   };
 
   return (
-    <ScrollView className="flex-1 bg-white">
+    <KeyboardAwareScrollView className="flex-1 bg-background dark:bg-background-dark">
       <View className="flex-1 items-center justify-center p-6 min-h-screen">
         <View className="w-full max-w-sm">
           {/* Logo */}
@@ -155,6 +155,6 @@ export default function LoginScreen() {
           </View>
         </View>
       </View>
-    </ScrollView>
+    </KeyboardAwareScrollView>
   );
 }

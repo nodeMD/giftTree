@@ -4,12 +4,12 @@ import { Link, router } from "expo-router";
 import { useState } from "react";
 import {
   ActivityIndicator,
-  ScrollView,
   Text,
   TextInput,
   TouchableOpacity,
   View,
 } from "react-native";
+import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
 
 export default function RegisterScreen() {
   const [email, setEmail] = useState("");
@@ -77,7 +77,7 @@ export default function RegisterScreen() {
   };
 
   return (
-    <ScrollView className="flex-1 bg-white">
+    <KeyboardAwareScrollView className="flex-1 bg-background dark:bg-background-dark">
       <View className="flex-1 items-center justify-center p-6 min-h-screen">
         <View className="w-full max-w-sm">
           {/* Logo */}
@@ -210,6 +210,6 @@ export default function RegisterScreen() {
           </View>
         </View>
       </View>
-    </ScrollView>
+    </KeyboardAwareScrollView>
   );
 }

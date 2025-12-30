@@ -4,12 +4,12 @@ import { Link, router, useLocalSearchParams } from "expo-router";
 import { useState } from "react";
 import {
   ActivityIndicator,
-  ScrollView,
   Text,
   TextInput,
   TouchableOpacity,
   View,
 } from "react-native";
+import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
 
 export default function ResetPasswordScreen() {
   // Check for deep link params (userId & secret from Appwrite recovery email)
@@ -92,7 +92,7 @@ export default function ResetPasswordScreen() {
   };
 
   return (
-    <ScrollView className="flex-1 bg-white">
+    <KeyboardAwareScrollView className="flex-1 bg-background dark:bg-background-dark">
       <View className="flex-1 items-center justify-center p-6 min-h-screen">
         <View className="w-full max-w-sm">
           {/* Logo */}
@@ -228,6 +228,6 @@ export default function ResetPasswordScreen() {
           </View>
         </View>
       </View>
-    </ScrollView>
+    </KeyboardAwareScrollView>
   );
 }
