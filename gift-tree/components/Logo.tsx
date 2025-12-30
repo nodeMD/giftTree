@@ -1,7 +1,7 @@
 import { images } from "@/constants/images";
 import React from "react";
 import { Image, View } from "react-native";
-//Movie from interfaces.ts
+
 const Logo = () => {
   return (
     <View className="items-center mb-8">
