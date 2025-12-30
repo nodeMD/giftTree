@@ -1,7 +1,7 @@
 import { useAuth } from "@/contexts/AuthContext";
 import { fetchCatGif } from "@/services/api";
 import useFetch from "@/services/useFetch";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import {
   ActivityIndicator,
   Image,
@@ -10,7 +10,7 @@ import {
   View,
 } from "react-native";
 
-const MAX_CLICKS = 5000;
+const MAX_CLICKS = 1500;
 
 export default function HomeScreen() {
   const { user, incrementClickCount } = useAuth();
@@ -18,11 +18,15 @@ export default function HomeScreen() {
     fetchCatGif,
   );
   const [imageLoaded, setImageLoaded] = useState(false);
+  const hasIncrementedOnMount = useRef(false);
 
   // Increment counter on initial page load (when first GIF is shown)
   useEffect(() => {
-    incrementClickCount();
-  }, []);
+    if (!hasIncrementedOnMount.current) {
+      hasIncrementedOnMount.current = true;
+      incrementClickCount();
+    }
+  }, [incrementClickCount]);
 
   const clickCount = user?.clickCount || 0;
   const progressPercent = Math.min((clickCount / MAX_CLICKS) * 100, 100);
@@ -42,7 +46,7 @@ export default function HomeScreen() {
       <View className="px-4 pt-12 pb-4">
         <View className="flex-row justify-between items-center">
           <Text className="text-foreground-secondary dark:text-foreground-dark-secondary text-sm">
-            Progress
+            Progress (keep 50 clicks per day 🌲)
           </Text>
           <Text className="text-foreground-secondary dark:text-foreground-dark-secondary text-sm">
             {clickCount.toLocaleString()}/{MAX_CLICKS.toLocaleString()}
