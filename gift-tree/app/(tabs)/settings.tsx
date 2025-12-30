@@ -3,12 +3,16 @@ import { useTheme } from "@/contexts/ThemeContext";
 import Ionicons from "@expo/vector-icons/Ionicons";
 import { router } from "expo-router";
 import { useState } from "react";
-import { Modal, Pressable, Text, TouchableOpacity, View } from "react-native";
+import { KeyboardAvoidingView, Modal, Platform, Pressable, Text, TextInput, TouchableOpacity, View } from "react-native";
 
 export default function SettingsScreen() {
-  const { signOut } = useAuth();
+  const { signOut, deleteAccount, user } = useAuth();
   const { theme, setTheme, isDark } = useTheme();
   const [showThemeModal, setShowThemeModal] = useState(false);
+  const [showDeleteModal, setShowDeleteModal] = useState(false);
+  const [nicknameInput, setNicknameInput] = useState("");
+  const [isDeleting, setIsDeleting] = useState(false);
+  const [deleteError, setDeleteError] = useState("");
 
   const handleLogout = async () => {
     await signOut();
@@ -16,8 +20,39 @@ export default function SettingsScreen() {
   };
 
   const handleDeleteAccount = () => {
-    // TODO: Show delete confirmation modal
-    console.log("Delete account requested");
+    setShowDeleteModal(true);
+  };
+
+  const handleConfirmDelete = async () => {
+    if (nicknameInput !== user?.nickname) {
+      setDeleteError("Nickname doesn't match. Please try again.");
+      return;
+    }
+    
+    setDeleteError("");
+    setIsDeleting(true);
+    try {
+      await deleteAccount();
+      router.replace("/(auth)/login");
+    } catch (error) {
+      console.error("Error deleting account:", error);
+      setDeleteError("Failed to delete account. Please try again.");
+    } finally {
+      setIsDeleting(false);
+      setShowDeleteModal(false);
+      setNicknameInput("");
+    }
+  };
+
+  const closeDeleteModal = () => {
+    setShowDeleteModal(false);
+    setNicknameInput("");
+    setDeleteError("");
+  };
+
+  const handleNicknameChange = (text: string) => {
+    setNicknameInput(text);
+    if (deleteError) setDeleteError("");
   };
 
   const themeLabels = {
@@ -171,6 +206,95 @@ export default function SettingsScreen() {
             </TouchableOpacity>
           </View>
         </Pressable>
+      </Modal>
+
+      {/* Delete Account Confirmation Modal */}
+      <Modal
+        visible={showDeleteModal}
+        transparent
+        animationType="fade"
+        onRequestClose={closeDeleteModal}
+      >
+        <KeyboardAvoidingView
+          behavior={Platform.OS === "ios" ? "padding" : "height"}
+          className="flex-1"
+        >
+          <Pressable
+            className="flex-1 bg-black/50 justify-center items-center"
+            onPress={closeDeleteModal}
+          >
+            <Pressable
+              className="bg-background dark:bg-background-dark rounded-2xl w-4/5 max-w-sm p-4"
+              onPress={(e) => e.stopPropagation()}
+            >
+              {/* Header */}
+              <View className="flex-row items-center justify-between mb-3">
+                <Text className="text-lg font-semibold text-danger">
+                  Delete Account
+                </Text>
+                <TouchableOpacity onPress={closeDeleteModal}>
+                  <Ionicons
+                    name="close"
+                    size={24}
+                    color={isDark ? "#9CA3AF" : "#6B7280"}
+                  />
+                </TouchableOpacity>
+              </View>
+
+              {/* Divider */}
+              <View className="h-px bg-border dark:bg-border-dark mb-4" />
+
+              {/* Instructions */}
+              <Text className="text-foreground dark:text-foreground-dark text-base mb-4">
+                To confirm deletion, please type your nickname:{" "}
+                <Text className="font-semibold">{user?.nickname}</Text>
+              </Text>
+
+              {/* Input */}
+              <TextInput
+                value={nicknameInput}
+                onChangeText={handleNicknameChange}
+                placeholder="Enter your nickname"
+                placeholderTextColor={isDark ? "#6B7280" : "#9CA3AF"}
+                className={`border rounded-lg px-4 py-3 text-foreground dark:text-foreground-dark ${
+                  deleteError
+                    ? "border-danger"
+                    : "border-border dark:border-border-dark"
+                }`}
+              />
+
+              {/* Error Message */}
+              {deleteError ? (
+                <Text className="text-danger text-sm mt-2 mb-4">{deleteError}</Text>
+              ) : (
+                <View className="mb-4" />
+              )}
+
+              {/* Buttons */}
+              <View className="flex-row gap-3">
+                <TouchableOpacity
+                  onPress={closeDeleteModal}
+                  className="flex-1 py-3 bg-background-secondary dark:bg-background-dark-secondary rounded-lg"
+                >
+                  <Text className="text-foreground dark:text-foreground-dark text-center font-semibold">
+                    Cancel
+                  </Text>
+                </TouchableOpacity>
+                <TouchableOpacity
+                  onPress={handleConfirmDelete}
+                  disabled={isDeleting}
+                  className={`flex-1 py-3 rounded-lg ${
+                    isDeleting ? "bg-danger/50" : "bg-danger"
+                  }`}
+                >
+                  <Text className="text-white text-center font-semibold">
+                    {isDeleting ? "Deleting..." : "Confirm Delete"}
+                  </Text>
+                </TouchableOpacity>
+              </View>
+            </Pressable>
+          </Pressable>
+        </KeyboardAvoidingView>
       </Modal>
     </View>
   );

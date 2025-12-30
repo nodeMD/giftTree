@@ -158,4 +158,16 @@ export async function updateClickCount(
   });
 }
 
+export async function deleteAccount(userId: string): Promise<void> {
+  // Delete user profile from database first
+  await tablesDB.deleteRow({
+    databaseId: appwriteConfig.databaseId,
+    tableId: appwriteConfig.usersCollectionId,
+    rowId: userId,
+  });
+
+  // Delete the auth account (this also ends all sessions)
+  await account.updateStatus();
+}
+
 export { ID };
