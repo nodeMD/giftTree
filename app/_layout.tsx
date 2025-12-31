@@ -1,9 +1,10 @@
+import { LoadingIndicator } from "@/components/LoadingIndicator";
 import { AuthProvider, useAuth } from "@/contexts/AuthContext";
 import { ThemeProvider } from "@/contexts/ThemeContext";
 import { initializeNotifications } from "@/services/notifications";
 import { Slot, useRouter, useSegments } from "expo-router";
 import { useEffect } from "react";
-import { ActivityIndicator, View } from "react-native";
+import { View } from "react-native";
 import "./global.css";
 
 function RootLayoutNav() {
@@ -28,7 +29,7 @@ function RootLayoutNav() {
   if (isLoading) {
     return (
       <View className="flex-1 items-center justify-center bg-background dark:bg-background-dark">
-        <ActivityIndicator size="large" color="#16A34A" />
+        <LoadingIndicator />
       </View>
     );
   }

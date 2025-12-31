@@ -1,17 +1,12 @@
+import { AdBanner } from "@/components/AdBanner";
+import { LoadingIndicator } from "@/components/LoadingIndicator";
+import { TreeDetailsModal } from "@/components/TreeDetailsModal";
 import { useAuth } from "@/contexts/AuthContext";
 import { fetchTreeData } from "@/services/api";
 import useFetch from "@/services/useFetch";
 import { Tree, TreesApiResponse } from "@/types/api";
 import { useCallback, useState } from "react";
-import {
-  ActivityIndicator,
-  Image,
-  Modal,
-  ScrollView,
-  Text,
-  TouchableOpacity,
-  View,
-} from "react-native";
+import { ScrollView, Text, TouchableOpacity, View } from "react-native";
 
 export default function TreesScreen() {
   const { user } = useAuth();
@@ -46,7 +41,7 @@ export default function TreesScreen() {
       </View>
 
       {/* Content */}
-      {loading && <ActivityIndicator size="large" color="#16A34A" />}
+      {loading && <LoadingIndicator />}
       {error && (
         <Text className="text-danger px-4 text-center">
           Error: {error.message}
@@ -91,94 +86,13 @@ export default function TreesScreen() {
       )}
 
       {/* Ad Banner Placeholder */}
-      <View className="h-16 bg-background-secondary dark:bg-background-dark-secondary items-center justify-center">
-        <Text className="text-foreground-muted dark:text-foreground-dark-muted text-sm">
-          Ad Banner Placeholder
-        </Text>
-      </View>
+      <AdBanner />
 
-      {/* Tree Details Modal */}
-      <Modal
-        animationType="slide"
-        transparent={true}
+      <TreeDetailsModal
         visible={modalVisible}
-        onRequestClose={closeModal}
-      >
-        <View className="flex-1 bg-background dark:bg-background-dark">
-          {/* Modal Header */}
-          <View className="flex-row justify-between items-center px-4 pt-12 pb-4 border-b border-border dark:border-border-dark">
-            <Text className="text-xl font-semibold text-foreground dark:text-foreground-dark">
-              Tree Details
-            </Text>
-            <TouchableOpacity onPress={closeModal}>
-              <Text className="text-2xl text-foreground-secondary dark:text-foreground-dark-secondary">
-                ✕
-              </Text>
-            </TouchableOpacity>
-          </View>
-
-          {/* Modal Content */}
-          <ScrollView className="flex-1 px-4">
-            {/* Tree Image */}
-            {selectedTree?.image_url && (
-              <View className="mt-4 rounded-xl overflow-hidden">
-                <Image
-                  source={{ uri: selectedTree.image_url }}
-                  className="w-full aspect-square"
-                  resizeMode="cover"
-                />
-              </View>
-            )}
-
-            {/* Tree Details */}
-            <View className="mt-6">
-              <Text className="text-foreground-secondary dark:text-foreground-dark-secondary text-sm">
-                Tree ID
-              </Text>
-              <Text className="text-foreground dark:text-foreground-dark text-lg font-medium mt-1">
-                #{selectedTree?.id}
-              </Text>
-            </View>
-
-            <View className="mt-4">
-              <Text className="text-foreground-secondary dark:text-foreground-dark-secondary text-sm">
-                Common Name
-              </Text>
-              <Text className="text-foreground dark:text-foreground-dark text-lg font-medium mt-1">
-                {selectedTree?.common_name || "Unknown"}
-              </Text>
-            </View>
-
-            <View className="mt-4">
-              <Text className="text-foreground-secondary dark:text-foreground-dark-secondary text-sm">
-                Family
-              </Text>
-              <Text className="text-foreground dark:text-foreground-dark text-lg font-medium mt-1 italic">
-                {selectedTree?.family || "Unknown"}
-              </Text>
-            </View>
-
-            <View className="mt-4">
-              <Text className="text-foreground-secondary dark:text-foreground-dark-secondary text-sm">
-                Genus
-              </Text>
-              <Text className="text-foreground dark:text-foreground-dark text-lg font-medium mt-1 italic">
-                {selectedTree?.genus || "Unknown"}
-              </Text>
-            </View>
-
-            {/* Close Button */}
-            <TouchableOpacity
-              onPress={closeModal}
-              className="bg-primary py-4 rounded-xl mt-8 mb-8"
-            >
-              <Text className="text-white text-center font-semibold text-base">
-                Close
-              </Text>
-            </TouchableOpacity>
-          </ScrollView>
-        </View>
-      </Modal>
+        tree={selectedTree}
+        onClose={closeModal}
+      />
     </View>
   );
 }
