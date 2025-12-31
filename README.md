@@ -1,8 +1,11 @@
 ![example workflow](https://github.com/nodeMD/giftTree/actions/workflows/ci.yml/badge.svg)
 
-# Gift Tree 🌲
+# GifTree 🌲
 
 A React Native mobile app that gamifies tree planting through user engagement. Click to view cat GIFs, track your progress, and unlock virtual trees!
+
+https://github.com/user-attachments/assets/ed3b11bc-2920-4a44-8cba-829f7cf33dd5
+
 
 ## Features
 
@@ -90,7 +93,7 @@ EXPO_PUBLIC_TREFLE_TOKEN=your_trefle_api_token
 ## Project Structure
 
 ```
-gift-tree/
+gifTree/
 ├── app/                    # App screens (file-based routing)
 │   ├── (auth)/            # Authentication screens
 │   │   ├── login.tsx
