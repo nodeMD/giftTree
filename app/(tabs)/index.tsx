@@ -2,6 +2,7 @@ import { MAX_CLICKS } from "@/constants/app";
 import { useAuth } from "@/contexts/AuthContext";
 import { fetchCatGif } from "@/services/api";
 import useFetch from "@/services/useFetch";
+import { CatGifResponse } from "@/types/api";
 import { useEffect, useRef, useState } from "react";
 import {
   ActivityIndicator,
@@ -13,7 +14,7 @@ import {
 
 export default function HomeScreen() {
   const { user, incrementClickCount } = useAuth();
-  const { data, loading, error, refetch } = useFetch<{ url: string }>(
+  const { data, loading, error, refetch } = useFetch<CatGifResponse>(
     fetchCatGif,
   );
   const [imageLoaded, setImageLoaded] = useState(false);

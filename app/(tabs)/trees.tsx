@@ -1,6 +1,7 @@
 import { useAuth } from "@/contexts/AuthContext";
 import { fetchTreeData } from "@/services/api";
 import useFetch from "@/services/useFetch";
+import { Tree, TreesApiResponse } from "@/types/api";
 import { useState } from "react";
 import {
   ActivityIndicator,
@@ -12,21 +13,12 @@ import {
   View,
 } from "react-native";
 
-interface Tree {
-  id: number;
-  common_name: string;
-  status: string;
-  image_url: string | null;
-  family: string | null;
-  genus: string | null;
-}
-
 export default function TreesScreen() {
   const { user } = useAuth();
   const [selectedTree, setSelectedTree] = useState<Tree | null>(null);
   const [modalVisible, setModalVisible] = useState(false);
 
-  const { data, loading, error } = useFetch<{ data: Tree[] }>(
+  const { data, loading, error } = useFetch<TreesApiResponse>(
     () => fetchTreeData("tree", user?.completedGoals || 0),
     (user?.completedGoals || 0) > 0, // Only fetch if completedGoals > 0
   );
