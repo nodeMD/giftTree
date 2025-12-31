@@ -1,12 +1,12 @@
 import HomeScreen from "@/app/(tabs)/index";
 import { useAuth } from "@/contexts/AuthContext";
-import useFetch from "@/services/useFetch";
+import useFetch from "@/hooks/useFetch";
 import { act, fireEvent, render, waitFor } from "@testing-library/react-native";
 import React from "react";
 
 // Mock the hooks
 jest.mock("@/contexts/AuthContext");
-jest.mock("@/services/useFetch");
+jest.mock("@/hooks/useFetch");
 
 const mockUseAuth = useAuth as jest.MockedFunction<typeof useAuth>;
 const mockUseFetch = useFetch as jest.MockedFunction<typeof useFetch>;

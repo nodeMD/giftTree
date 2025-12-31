@@ -1,14 +1,9 @@
+import { LoadingIndicator } from "@/components/LoadingIndicator";
 import Logo from "@/components/Logo";
 import { useAuth } from "@/contexts/AuthContext";
 import { Link, router } from "expo-router";
 import { useState } from "react";
-import {
-  ActivityIndicator,
-  Text,
-  TextInput,
-  TouchableOpacity,
-  View,
-} from "react-native";
+import { Text, TextInput, TouchableOpacity, View } from "react-native";
 import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
 
 export default function RegisterScreen() {
@@ -188,7 +183,7 @@ export default function RegisterScreen() {
               className={`w-full py-3.5 rounded-lg ${isLoading ? "bg-primary-light" : "bg-primary active:bg-primary-dark"}`}
             >
               {isLoading ? (
-                <ActivityIndicator color="white" />
+                <LoadingIndicator />
               ) : (
                 <Text className="text-white text-center font-semibold text-base">
                   Sign Up
