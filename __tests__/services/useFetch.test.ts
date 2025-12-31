@@ -1,4 +1,4 @@
-import useFetch from "@/services/useFetch";
+import useFetch from "@/hooks/useFetch";
 import { act, renderHook, waitFor } from "@testing-library/react-native";
 
 describe("useFetch", () => {

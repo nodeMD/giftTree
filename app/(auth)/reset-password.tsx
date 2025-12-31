@@ -1,14 +1,9 @@
+import { LoadingIndicator } from "@/components/LoadingIndicator";
 import Logo from "@/components/Logo";
 import { completePasswordReset, sendPasswordReset } from "@/services/appwrite";
 import { Link, router, useLocalSearchParams } from "expo-router";
 import { useState } from "react";
-import {
-  ActivityIndicator,
-  Text,
-  TextInput,
-  TouchableOpacity,
-  View,
-} from "react-native";
+import { Text, TextInput, TouchableOpacity, View } from "react-native";
 import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
 
 export default function ResetPasswordScreen() {
@@ -183,7 +178,7 @@ export default function ResetPasswordScreen() {
                       className={`w-full py-3.5 rounded-lg ${isLoading ? "bg-primary-light" : "bg-primary active:bg-primary-dark"}`}
                     >
                       {isLoading ? (
-                        <ActivityIndicator color="white" />
+                        <LoadingIndicator />
                       ) : (
                         <Text className="text-white text-center font-semibold text-base">
                           Set New Password
@@ -216,7 +211,7 @@ export default function ResetPasswordScreen() {
                       className={`w-full py-3.5 rounded-lg ${isLoading ? "bg-primary-light" : "bg-primary active:bg-primary-dark"}`}
                     >
                       {isLoading ? (
-                        <ActivityIndicator color="white" />
+                        <LoadingIndicator />
                       ) : (
                         <Text className="text-white text-center font-semibold text-base">
                           Reset Password

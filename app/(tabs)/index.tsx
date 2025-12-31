@@ -1,16 +1,12 @@
+import { AdBanner } from "@/components/AdBanner";
+import { LoadingIndicator } from "@/components/LoadingIndicator";
 import { MAX_CLICKS } from "@/constants/app";
 import { useAuth } from "@/contexts/AuthContext";
+import useFetch from "@/hooks/useFetch";
 import { fetchCatGif } from "@/services/api";
-import useFetch from "@/services/useFetch";
 import { CatGifResponse } from "@/types/api";
 import { useEffect, useRef, useState } from "react";
-import {
-  ActivityIndicator,
-  Image,
-  Text,
-  TouchableOpacity,
-  View,
-} from "react-native";
+import { Image, Text, TouchableOpacity, View } from "react-native";
 
 export default function HomeScreen() {
   const { user, incrementClickCount } = useAuth();
@@ -63,7 +59,7 @@ export default function HomeScreen() {
       <View className="flex-1 items-center justify-center p-4">
         {/* GIF */}
         <View className="w-full aspect-square max-w-xs bg-background-secondary dark:bg-background-dark-secondary rounded-2xl items-center justify-center mb-8 overflow-hidden">
-          {isLoading && <ActivityIndicator size="large" color="#16A34A" />}
+          {isLoading && <LoadingIndicator />}
           {error && (
             <Text className="text-danger px-4 text-center">
               Error: {error.message}
@@ -94,11 +90,7 @@ export default function HomeScreen() {
       </View>
 
       {/* Ad Banner Placeholder */}
-      <View className="h-16 bg-background-secondary dark:bg-background-dark-secondary items-center justify-center">
-        <Text className="text-foreground-muted dark:text-foreground-dark-muted text-sm">
-          Ad Banner Placeholder
-        </Text>
-      </View>
+      <AdBanner />
     </View>
   );
 }

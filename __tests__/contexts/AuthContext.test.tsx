@@ -9,8 +9,7 @@ jest.mock("@/services/appwrite", () => ({
   createUser: jest.fn(),
   getCurrentUser: jest.fn(),
   getUserProfile: jest.fn(),
-  updateClickCount: jest.fn(),
-  updateCompletedGoals: jest.fn(),
+  updateUserProgress: jest.fn(),
   deleteAccount: jest.fn(),
 }));
 
@@ -239,7 +238,7 @@ describe("AuthContext", () => {
         $createdAt: "",
         $updatedAt: "",
       });
-      mockAppwrite.updateClickCount.mockResolvedValue(undefined);
+      mockAppwrite.updateUserProgress.mockResolvedValue(undefined);
 
       const { result } = renderHook(() => useAuth(), { wrapper });
 
@@ -252,9 +251,10 @@ describe("AuthContext", () => {
       });
 
       expect(result.current.user?.clickCount).toBe(11);
-      expect(mockAppwrite.updateClickCount).toHaveBeenCalledWith(
+      expect(mockAppwrite.updateUserProgress).toHaveBeenCalledWith(
         "user-123",
         11,
+        0,
       );
     });
 
@@ -278,8 +278,7 @@ describe("AuthContext", () => {
         $createdAt: "",
         $updatedAt: "",
       });
-      mockAppwrite.updateClickCount.mockResolvedValue(undefined);
-      mockAppwrite.updateCompletedGoals.mockResolvedValue(undefined);
+      mockAppwrite.updateUserProgress.mockResolvedValue(undefined);
 
       const { result } = renderHook(() => useAuth(), { wrapper });
 
@@ -293,9 +292,9 @@ describe("AuthContext", () => {
 
       expect(result.current.user?.clickCount).toBe(0);
       expect(result.current.user?.completedGoals).toBe(3);
-      expect(mockAppwrite.updateClickCount).toHaveBeenCalledWith("user-123", 0);
-      expect(mockAppwrite.updateCompletedGoals).toHaveBeenCalledWith(
+      expect(mockAppwrite.updateUserProgress).toHaveBeenCalledWith(
         "user-123",
+        0,
         3,
       );
     });
@@ -311,7 +310,7 @@ describe("AuthContext", () => {
         await result.current.incrementClickCount();
       });
 
-      expect(mockAppwrite.updateClickCount).not.toHaveBeenCalled();
+      expect(mockAppwrite.updateUserProgress).not.toHaveBeenCalled();
     });
   });
 
