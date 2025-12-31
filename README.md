@@ -117,7 +117,6 @@ gift-tree/
 │   ├── app/
 │   ├── contexts/
 │   └── services/
-└── __mocks__/            # Jest mocks
 ```
 
 ## Testing
