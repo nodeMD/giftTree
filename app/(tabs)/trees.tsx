@@ -2,7 +2,7 @@ import { useAuth } from "@/contexts/AuthContext";
 import { fetchTreeData } from "@/services/api";
 import useFetch from "@/services/useFetch";
 import { Tree, TreesApiResponse } from "@/types/api";
-import { useState } from "react";
+import { useCallback, useState } from "react";
 import {
   ActivityIndicator,
   Image,
@@ -18,10 +18,11 @@ export default function TreesScreen() {
   const [selectedTree, setSelectedTree] = useState<Tree | null>(null);
   const [modalVisible, setModalVisible] = useState(false);
 
-  const { data, loading, error } = useFetch<TreesApiResponse>(
+  const fetchFn = useCallback(
     () => fetchTreeData("tree", user?.completedGoals || 0),
-    (user?.completedGoals || 0) > 0, // Only fetch if completedGoals > 0
+    [user?.completedGoals]
   );
+  const { data, loading, error } = useFetch<TreesApiResponse>(fetchFn, (user?.completedGoals || 0) > 0);
 
   const handleTreePress = (tree: Tree) => {
     setSelectedTree(tree);
