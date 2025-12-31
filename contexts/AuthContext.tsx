@@ -3,8 +3,7 @@ import {
   deleteAccount as appwriteDeleteAccount,
   signIn as appwriteSignIn,
   signOut as appwriteSignOut,
-  updateClickCount as appwriteUpdateClickCount,
-  updateCompletedGoals as appwriteUpdateCompletedGoals,
+  updateUserProgress as appwriteUpdateUserProgress,
   createUser,
   getCurrentUser,
   getUserProfile,
@@ -141,10 +140,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
 
     // Persist to database
     try {
-      await appwriteUpdateClickCount(user.id, newCount);
-      if (goalReached) {
-        await appwriteUpdateCompletedGoals(user.id, newCompletedGoals);
-      }
+      await appwriteUpdateUserProgress(user.id, newCount, newCompletedGoals);
     } catch (error) {
       console.error("Error updating click count:", error);
       // Revert on error

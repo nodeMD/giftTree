@@ -147,27 +147,20 @@ export async function completePasswordReset(
   await account.updateRecovery({ userId, secret, password: newPassword });
 }
 
-export async function updateClickCount(
+export async function updateUserProgress(
   userId: string,
   clickCount: number,
+  completedGoals?: number,
 ): Promise<void> {
+  const data: { clickCount: number; completedGoals?: number } = { clickCount };
+  if (completedGoals !== undefined) {
+    data.completedGoals = completedGoals;
+  }
   await tablesDB.updateRow({
     databaseId: appwriteConfig.databaseId,
     tableId: appwriteConfig.usersCollectionId,
     rowId: userId,
-    data: { clickCount },
-  });
-}
-
-export async function updateCompletedGoals(
-  userId: string,
-  completedGoals: number,
-): Promise<void> {
-  await tablesDB.updateRow({
-    databaseId: appwriteConfig.databaseId,
-    tableId: appwriteConfig.usersCollectionId,
-    rowId: userId,
-    data: { completedGoals },
+    data,
   });
 }
 
