@@ -20,9 +20,12 @@ export default function TreesScreen() {
 
   const fetchFn = useCallback(
     () => fetchTreeData("tree", user?.completedGoals || 0),
-    [user?.completedGoals]
+    [user?.completedGoals],
   );
-  const { data, loading, error } = useFetch<TreesApiResponse>(fetchFn, (user?.completedGoals || 0) > 0);
+  const { data, loading, error } = useFetch<TreesApiResponse>(
+    fetchFn,
+    (user?.completedGoals || 0) > 0,
+  );
 
   const handleTreePress = (tree: Tree) => {
     setSelectedTree(tree);

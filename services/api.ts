@@ -24,7 +24,10 @@ export const fetchCatGif = async (): Promise<CatGifResponse> => {
   return data;
 };
 
-export const fetchTreeData = async (query: string, limit: number): Promise<TreesApiResponse> => {
+export const fetchTreeData = async (
+  query: string,
+  limit: number,
+): Promise<TreesApiResponse> => {
   const endpoint = `${API_CONFIG.TREFLE_URL}/plants/search?token=${process.env.EXPO_PUBLIC_TREFLE_TOKEN}&q=${query}&limit=${limit}`;
 
   const response = await fetch(endpoint, {

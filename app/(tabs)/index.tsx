@@ -14,9 +14,8 @@ import {
 
 export default function HomeScreen() {
   const { user, incrementClickCount } = useAuth();
-  const { data, loading, error, refetch } = useFetch<CatGifResponse>(
-    fetchCatGif,
-  );
+  const { data, loading, error, refetch } =
+    useFetch<CatGifResponse>(fetchCatGif);
   const [imageLoaded, setImageLoaded] = useState(false);
   const hasIncrementedOnMount = useRef(false);
 
