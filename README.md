@@ -1,4 +1,4 @@
-![example workflow](https://github.com/nodeMD/giftTree/actions/workflows/ci.yml/badge.svg)
+![example workflow](https://github.com/nodeMD/gifTree/actions/workflows/ci.yml/badge.svg)
 
 # GifTree 🌲
 
