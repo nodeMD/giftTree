@@ -94,6 +94,8 @@ EXPO_PUBLIC_TREFLE_TOKEN=your_trefle_api_token
 
 ```
 gifTree/
+├── .github/workflows   
+│       └── ci.yml         # CI workflow
 ├── app/                    # App screens (file-based routing)
 │   ├── (auth)/            # Authentication screens
 │   │   ├── login.tsx
@@ -115,6 +117,8 @@ gifTree/
 │   ├── api.ts            # External API calls
 │   ├── appwrite.ts       # Appwrite SDK wrapper
 │   ├── notifications.ts  # Push notifications
+├── hooks/                # Custom react hooks
+│   ├── useDeleteAccount.ts
 │   └── useFetch.ts       # Data fetching hook
 ├── __tests__/            # Test files
 │   ├── app/
