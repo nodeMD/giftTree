@@ -94,6 +94,8 @@ EXPO_PUBLIC_TREFLE_TOKEN=your_trefle_api_token
 
 ```
 gifTree/
+├── .github/workflows   
+│       └── ci.yml         # CI workflow
 ├── app/                    # App screens (file-based routing)
 │   ├── (auth)/            # Authentication screens
 │   │   ├── login.tsx
