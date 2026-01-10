@@ -61,7 +61,7 @@ export function PrivacyPolicyModal({
             {/* Privacy Policy Content */}
             <ScrollView className="max-h-[70vh]">
               <Text className="text-foreground dark:text-foreground-dark text-base mb-4">
-                GiftTree is committed to protecting your privacy. This policy
+                GifTree is committed to protecting your privacy. This policy
                 outlines how we collect, use, and protect your personal
                 information.
               </Text>
