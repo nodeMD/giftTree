@@ -35,7 +35,7 @@ export async function scheduleDailyNotification(): Promise<void> {
   await Notifications.scheduleNotificationAsync({
     content: {
       title: "🌳 Time to grow your tree!",
-      body: "Don't forget to visit GiftTree today and help your tree grow!",
+      body: "Don't forget to visit GifTree today and help your tree grow!",
       sound: true,
     },
     trigger: {
