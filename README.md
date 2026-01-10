@@ -5,6 +5,7 @@
 A React Native mobile app that gamifies tree planting through user engagement. Click to view cat GIFs, track your progress, and unlock virtual trees!
 
 https://github.com/user-attachments/assets/ed3b11bc-2920-4a44-8cba-829f7cf33dd5
+![notification](https://github.com/user-attachments/assets/2de51172-1103-4c70-81cc-da8772575ea6)
 
 
 ## Features
