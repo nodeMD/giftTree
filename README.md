@@ -115,6 +115,8 @@ gifTree/
 │   ├── api.ts            # External API calls
 │   ├── appwrite.ts       # Appwrite SDK wrapper
 │   ├── notifications.ts  # Push notifications
+├── hooks/                # Custom react hooks
+│   ├── useDeleteAccount.ts
 │   └── useFetch.ts       # Data fetching hook
 ├── __tests__/            # Test files
 │   ├── app/
